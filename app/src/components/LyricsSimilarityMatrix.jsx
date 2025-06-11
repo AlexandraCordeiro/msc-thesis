@@ -92,7 +92,7 @@ const LyricsSimilarityMatrix = ({tuneIndex}) => {
 
             const color = d3.scaleSequential()
             .domain([0, setOfTokens.length - 1])
-            .range(["#fc00ff", "#00dbde"])
+            .range(["#d0b6fa", "#94bbe9"])
         
             let colors = {}
             

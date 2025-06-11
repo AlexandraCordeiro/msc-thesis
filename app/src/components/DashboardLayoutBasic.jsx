@@ -163,7 +163,7 @@ import DropdownMenu from './DropdownMenu';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import InfoIcon from '@mui/icons-material/Info';
 import ShowLyrics from './ShowLyrics';
-const LyricsContent = ({filename, tune, creator, options, handleChange, open, handleClose, setOpen}) => (
+const LyricsContent = ({filename, router, tune, creator, options, handleChange, open, handleClose, setOpen}) => (
     <Grid container spacing={1}>
         <Grid size={7}>
            <Typography variant='h3'>The hidden patterns in song lyrics</Typography>
@@ -187,7 +187,7 @@ const LyricsContent = ({filename, tune, creator, options, handleChange, open, ha
         </Grid>
 
          <Grid size={4} style={{display: 'flex',  alignItems: 'center', justifyContent:'center'}}>
-            <MusicPlayer filename={filename} tune={tune} creator={creator}></MusicPlayer>
+            <MusicPlayer filename={filename} tune={tune} creator={creator} router={router.pathname}></MusicPlayer>
         </Grid>
 
         <Grid size={4} style={{display: 'flex', alignItems: 'center', justifyContent:'flex-end'}}>
@@ -215,7 +215,7 @@ const LyricsContent = ({filename, tune, creator, options, handleChange, open, ha
     </Grid>
 )
 
-const PerformanceContent = ({filename, options, tune, handleChange}) => (
+const PerformanceContent = ({filename, router, options, tune, handleChange}) => (
     <Grid container spacing={1}>
         <Grid size={7}>
            <Typography variant='h3'>How performance differs from the score</Typography>
@@ -239,7 +239,7 @@ const PerformanceContent = ({filename, options, tune, handleChange}) => (
         </Grid>
 
          <Grid size={4} style={{display: 'flex'}}>
-            <MusicPlayer filename={filename}></MusicPlayer>
+            <MusicPlayer filename={filename} router={router.pathname}></MusicPlayer>
         </Grid>
 
         <Grid size={4} style={{display: 'flex', alignItems: 'center', justifyContent:'flex-end'}}>
@@ -263,7 +263,7 @@ const PerformanceContent = ({filename, options, tune, handleChange}) => (
     </Grid>
 )
 
-const ScoreContent = ({filename, options, tune, handleChange}) => (
+const ScoreContent = ({filename, router, options, tune, handleChange}) => (
     <Grid container spacing={1}>
         <Grid size={7} >
            <Typography variant='h3'>Note range of a song</Typography>
@@ -287,7 +287,7 @@ const ScoreContent = ({filename, options, tune, handleChange}) => (
         </Grid>
 
          <Grid size={4} style={{display: 'flex'}}>
-            <MusicPlayer filename={filename}></MusicPlayer>
+            <MusicPlayer filename={filename} router={router.pathname}></MusicPlayer>
         </Grid>
         
         <Grid size={4} style={{display: 'flex', alignItems: 'center', justifyContent:'flex-end'}}>
@@ -366,11 +366,11 @@ export default function DashboardLayoutBasic(props) {
         console.log(router)
         switch (router.pathname) {
             case '/lyrics':
-                return <LyricsContent filename={filename} tune={tune} creator={creator} options={titles} handleChange={handleTuneChange} open={open} handleClose={handleClose} setOpen={setOpen}/>
+                return <LyricsContent filename={filename} router={router} tune={tune} creator={creator} options={titles} handleChange={handleTuneChange} open={open} handleClose={handleClose} setOpen={setOpen}/>
             case '/performance':
-                return <PerformanceContent filename={filename} options={titles} handleChange={handleTuneChange} tune={tune}/>
+                return <PerformanceContent filename={filename} router={router} options={titles} handleChange={handleTuneChange} tune={tune}/>
             case '/score':
-                return <ScoreContent filename={filename} options={titles} handleChange={handleTuneChange} tune={tune}/>
+                return <ScoreContent filename={filename} router={router} options={titles} handleChange={handleTuneChange} tune={tune}/>
             case '/collection':
                 return <CollectionContent collection={collection} tuneName={tuneName} setTuneName={setTuneName}/>
             default:

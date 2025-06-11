@@ -6,66 +6,68 @@ import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
 import {Container, Grid, IconButton, Slider} from '@mui/material'
 import {useWindowSize} from "./UseWindowSize.jsx"
 import {fontSize, setOfTokensFromString} from '../functions.js'
+import { useRef } from 'react'
 
-const useAudio = (filename) => {
-  const [song, setSong] = useState(() => new Audio(filename))
+const useAudio = (filename, router) => {
+  const audioRef = useRef(null)
   const [play, setPlay] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
 
-  // handles play button changes
-  function toggle() {
-    setPlay(!play)
+  const toggle = () => {
+    setPlay((prev) => !prev)
   }
 
   const seek = (value) => {
-    if (song) {
-      song.currentTime = value;
-      setCurrentTime(value);
+    if (audioRef.current) {
+      audioRef.current.currentTime = value
+      setCurrentTime(value)
     }
-  };
+  }
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime)
+  }
+
+  const handleEnded = () => {
+    setPlay(false)
+  }
+
 
   useLayoutEffect(() => {
-    song.pause()
-    song.removeEventListener('timeupdate', () => setCurrentTime(0)) 
-    song.removeEventListener('ended', () => setPlay(false))
-    
-    // Reset states
+    // Clean up previous audio
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate)
+      audioRef.current.removeEventListener('ended', handleEnded)
+    }
+
+    const newAudio = new Audio(filename)
+    newAudio.addEventListener('timeupdate', handleTimeUpdate)
+    newAudio.addEventListener('ended', handleEnded)
+    audioRef.current = newAudio
+
     setPlay(false)
     setCurrentTime(0)
-    
-    // new audio
-    const newAudio = new Audio(filename)
-    setSong(newAudio)
-    
-  }, [filename])
-
-  useLayoutEffect(() => {
-      play ? song.play() : song.pause()
-    },
-    [play]
-  )
-
-  useLayoutEffect(() =>  {
-    song.addEventListener('timeupdate', () => {
-      setCurrentTime(song.currentTime)
-    })
 
     return () => {
-      song.removeEventListener('timeupdate', () => setCurrentTime(0))
+      newAudio.pause()
+      newAudio.removeEventListener('timeupdate', handleTimeUpdate)
+      newAudio.removeEventListener('ended', handleEnded)
     }
-  }, [song])
+  }, [filename, router])
 
   useLayoutEffect(() => {
-    song.addEventListener('ended', () => setPlay(false))
+    const audio = audioRef.current
+    if (!audio) return
 
-    // react clean up function
-    // runs when a component is rerun
-    return () => {
-      song.removeEventListener('ended', () => setPlay(false))
+    if (play) {
+      audio.play()
+    } else {
+      audio.pause()
     }
-  }, [song])
+  }, [play])
 
-  return [play, toggle, currentTime, song.duration, seek]
+  return [play, toggle, currentTime, audioRef.current?.duration || 0, seek]
 }
 
 function formatDuration(value) {
@@ -74,9 +76,9 @@ function formatDuration(value) {
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
 }
 
-export default function MusicPlayer({filename}) {
+export default function MusicPlayer({filename, router}) {
   // playMusic returns a boolean (true/false) = (playing/not playing)
-  const [playMusic, setMusic, currentTime, duration, seek] = useAudio(`/audio_files/${filename}.mp3`)
+  const [playMusic, setMusic, currentTime, duration, seek] = useAudio(`/audio_files/${filename}.mp3`, router)
   console.log(`duration: ${duration}\ncurrent: ${currentTime}`)
   const [width, height] = useWindowSize()
 
