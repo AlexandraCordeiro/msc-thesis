@@ -1,1 +1,1 @@
-# msc-thesis
+# MSc Thesis - Visualization of Folk Music
