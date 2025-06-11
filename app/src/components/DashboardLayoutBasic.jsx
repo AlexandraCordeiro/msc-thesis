@@ -282,14 +282,29 @@ const ScoreContent = ({filename, options, tune, handleChange}) => (
         <Grid size={12}>
             <Typography variant='body2'>Select a tune</Typography>
         </Grid>
-        <Grid xs={4} md={3}>
+        <Grid size={4}>
             <DropdownMenu options={options} handleTuneChange={handleChange} selectedValue={tune}></DropdownMenu>
         </Grid>
 
-         <Grid xs={4} md={3} style={{display: 'flex'}}>
+         <Grid size={4} style={{display: 'flex'}}>
             <MusicPlayer filename={filename}></MusicPlayer>
         </Grid>
         
+        <Grid size={4} style={{display: 'flex', alignItems: 'center', justifyContent:'flex-end'}}>
+            <Tooltip title={<Typography variant='body2'>Lyrics</Typography>}>
+                <IconButton>
+                    <TextSnippetIcon sx={{color:'#565656'}}/>
+                </IconButton>
+            </Tooltip>
+
+            <Tooltip title={<Typography variant='body2'>How to Read</Typography>}>
+                <IconButton>
+                    <InfoIcon sx={{color:'#565656'}}/>
+                </IconButton>
+            </Tooltip>
+
+        </Grid>
+
         <Grid size={12}>
             <ArcDiagramChart tune={filename}/>
         </Grid>
@@ -387,6 +402,11 @@ const handleTuneChange = (value) => {
         router={router}
         theme={demoTheme}
         window={demoWindow}
+        branding={{
+            logo: '',
+            title: '',
+            homeUrl: '/toolpad/core/introduction',
+        }}
     >
         <DashboardLayout>
             <PageContainer title=''>

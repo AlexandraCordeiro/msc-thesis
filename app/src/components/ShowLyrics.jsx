@@ -43,8 +43,8 @@ export default function ShowLyrics({open, handleClose, lyrics, tune}) {
                 {tune}
                 </Typography>
 
-                <IconButton onClick={handleClose} style={{color: 'black'}}>
-                    <CloseIcon/>
+                <IconButton onClick={handleClose} style={{color: 'black', width: '3rem', height: '3rem'}}>
+                    <CloseIcon sx={{fontSize: '1.5rem'}}/>
                 </IconButton>
             </div>
 
