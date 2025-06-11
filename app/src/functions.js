@@ -186,6 +186,7 @@ export function drawNoteFrequencyRings(data, group, graphWidth, x) {
     .append('radialGradient')
     .attr('id', 'gradient')
 
+    
     radialGradient.append('stop')
         .attr('offset', '10%')
         .attr('stop-color', '#f9def1')
@@ -297,9 +298,9 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .attr("x", 0)
         .attr("y", 0)
         .attr('class', 'sparkline-labels')
-        .attr("font-weight", "500")
+        .attr("font-weight", "600")
         .attr("text-anchor", "start")
-        .attr("transform", `translate(${0}, ${-sparklineSize-yOffset*2})`)
+        .attr("transform", `translate(${-yOffset*1.5}, ${-sparklineSize-yOffset*2})`)
 
         // Note hovered
         histogram.append("g")
@@ -309,25 +310,25 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .attr('class', 'sparkline-labels')
         .attr("x", 0)
         .attr("y", 0)
-        .attr("font-weight", "500")
+        .attr("font-weight", "600")
         .attr("text-anchor", "start")
-        .attr("transform", `translate(${0}, ${-sparklineSize-yOffset})`)
+        .attr("fill", "#565656")
+        .attr("transform", `translate(${-yOffset*1.5}, ${-sparklineSize-yOffset})`)
 
 
         let histogramBBox = d3.select("#histogram").node().getBBox()
 
-        console.log(histogramBBox)
         sparklines
         .append("rect")
-        .attr("width", sparklineSize + (yOffset * 4))
-        .attr("height", sparklineSize + (xOffset * 3))
+        .attr("width", sparklineSize + (yOffset * 6))
+        .attr("height", sparklineSize + (xOffset * 4))
         .attr("rx", '1rem')
         .attr("ry", '1rem')
         .attr("stroke", '#C7D0DD')
         .attr("stroke-width", "1px")
         .attr("class", "sparkline-tooltip")
         .attr("fill", "white")
-        .attr("transform", `translate(${-yOffset * 2}, ${-sparklineSize - (xOffset * 2)})`)
+        .attr("transform", `translate(${-yOffset * 2.5}, ${-sparklineSize - (xOffset * 2.5)})`)
         .lower()
 
 

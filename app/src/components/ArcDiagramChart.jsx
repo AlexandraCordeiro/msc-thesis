@@ -4,8 +4,17 @@ import {drawNoteFrequencyRings, drawSparklines, midiToNote, cursorPoint, fontSiz
 import {useWindowSize} from "./UseWindowSize.jsx"
 
 const mouseOver = (e, d, data, graphHeight, graphWidth, x) => {   
-    let tooltip = d3.select("#tooltip")
+    
+
+    let tooltip = d3.select("#tooltip-sparklines")
     let group = d3.select("#align-group").node()
+    let r = 40
+    
+    d3.select(`#circle-${d}`)
+    .transition()
+    .attr("opacity", 0.3)
+    .attr("r", 20)
+
     const [mouseX, mouseY] = d3.pointer(e, group)
 
     // update
@@ -17,18 +26,25 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x) => {
     .duration(200)
     .style("opacity", 1)
     
-    let sparkline = drawSparklines(data, tooltip, graphHeight, graphWidth, x, d)
-    let sparklineWidth = (graphWidth * 0.1),
-    sparklineHeight = sparklineWidth
+    drawSparklines(data, tooltip, graphHeight, graphWidth, x, d)
+    let sparklineWidth = tooltip.node().getBBox().width,
+    sparklineHeight = tooltip.node().getBBox().height
+    console.log("+-+-+-+")
+    console.log(tooltip.node().getBBox())
 
     // translate
-    tooltip.attr('transform', `translate(${mouseX - sparklineWidth * 0.5}, ${mouseY + sparklineHeight * 2.5})`)
+    tooltip.attr('transform', `translate(${mouseX - sparklineWidth * 0.25}, ${mouseY + sparklineHeight})`)
 
     
 }
   
 const mouseOut = (e, d) => {
-    d3.select("#tooltip").style("opacity", 0);
+    d3.select("#tooltip-sparklines").style("opacity", 0);
+    d3.select(`#circle-${d}`)
+    .transition()
+    .attr("opacity", 0)
+    .attr("r", 10)
+
 }
 
 function drawXAxis(data, group, graphHeight, graphWidth, x) {
@@ -50,20 +66,43 @@ function drawXAxis(data, group, graphHeight, graphWidth, x) {
     )
     .attr("transform", `translate(0, ${graphHeight * 0.1})`)
 
+
+    noteNamesAxis.selectAll(".on-hover-circle")
+    .data(data.nodes.map(d => d.id))
+    .enter()
+    .append("circle")
+    .attr("fill", "#6889fc")
+    .attr("cx", d => x(d))
+    .attr("cy", graphHeight * 0.05 + 10)
+    .attr("r", 10)
+    .attr("opacity", 0)
+    .attr("id", d => `circle-${d}`)
+    .lower()
+
     noteNamesAxis.selectAll(".tick text")
     .attr("class", "axis-ticks")
-    .on("mouseover", (d, e) => mouseOver(d, e, data, graphHeight, graphWidth, x))
-    .on("mouseout", (d, e) => mouseOut(d, e))
+    .on("mouseover", (e, d) => mouseOver(e, d, data, graphHeight, graphWidth, x))
+    .on("mouseout", (e, d) => mouseOut(e, d))
 
     return noteNamesAxis
 }
 
 export function drawLinks(data, group, graphHeight, graphWidth, x) {
     // Add links between nodes
+    let extent = d3.extent(data.nodes.map(d => d.id))
+
     const idToNode = {};
     data.nodes.forEach(function (n) {
         idToNode[n.id] = n;
     });
+
+    let opacityScale = d3.scaleLinear()
+        .range([0.2, 1])
+        .domain([d3.min(data.links.map(d => d.count)), d3.max(data.links.map(d => d.count))])
+    
+    let colorScale = d3.scaleLinear()
+    .range(["#fdeff9", "#ec38bc", "#ab1bbe", "#7303c0"])
+    .domain([extent[0], extent[1] / 3, 2 * extent[1] / 3, extent[1]])
 
     // Add the links
     const links = group
@@ -106,9 +145,9 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
         return path
     })
     .style("fill","none")
-    .attr("stroke", "#6889fc")
+    .attr("stroke", d => colorScale((x(idToNode[d.source].id) + x(idToNode[d.target].id)) / 2))
     .attr("stroke-width", 2/* d => d.count */)
-    .attr("opcaity", 0.7)
+    .attr("opacity", d => opacityScale(d.count))
 
     return links
 }
@@ -144,7 +183,7 @@ const ArcDiagramChart = ({tune}) => {
         
         group
         .append("g")
-        .attr("id", "tooltip")
+        .attr("id", "tooltip-sparklines")
         .attr("style", "opacity: 0;")
 
         // load data
