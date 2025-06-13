@@ -133,7 +133,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName}) => {
             group.selectAll('.segment')
             .on('mouseover', function (e, d) {
                 const hovered = d3.select(this);
-                let scaleValue = (svgWidth / graphWidth) * 0.6
+                let scaleValue = 1 /* (svgWidth / graphWidth) * 0.6 */
                 hovered
                 .transition()
                 .ease(d3.easeCubicIn)

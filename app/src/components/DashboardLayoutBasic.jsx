@@ -20,7 +20,7 @@ import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import LyricsIcon from '@mui/icons-material/Lyrics';
 import MusicPlayer from './MusicPlayer'
-
+import customTheme from '../material-theme';
 
 
 
@@ -65,39 +65,6 @@ const dividerStyle = {
   borderImage: 'linear-gradient(90deg, #d0b6fa , #94bbe9) 1',
 }
 
-const demoTheme = createTheme({
-    colorSchemes: { light: true, dark: true },
-    cssVariables: {
-    colorSchemeSelector: 'class',
-    },
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 600,
-            md: 900,
-            lg: 1200,
-            xl: 1536,
-        },
-    },
-    typography: {
-        h2: {fontFamily: 'playfair display'},
-        h3: {fontFamily: 'playfair display'},
-        h4: {fontFamily: 'playfair display'},
-        h5: {fontFamily: 'montserrat'},
-        p: {fontFamily: 'montserrat'},
-        body: {fontFamily: 'montserrat'},
-        span: {fontFamily: 'montserrat'},
-        caption: {fontFamily: 'montserrat'},        
-        body1: {fontFamily: 'montserrat'},          
-        body2: {fontFamily: 'montserrat'},          
-        subtitle1: {fontFamily: 'montserrat'},      
-        subtitle2: {fontFamily: 'montserrat'},     
-    },
-    palette: {
-        contrastThreshold: 4.5,
-    }
-    
-});
 
 function useDemoRouter(initialPath) {
   const [pathname, setPathname] = React.useState(initialPath);
@@ -124,10 +91,10 @@ const LandingPage = () => (
     <Grid container spacing={1}>
         <Grid size={5} />
         <Grid size={12}>
-            <Typography variant='h2'>{"Title"}</Typography>
+            <Typography variant='h3'>{"Visualization of Folk Music"}</Typography>
         </Grid>
         <Grid size={12}>
-           <Typography variant='h3'>{"Subtitle"}</Typography>
+           <Typography variant='h5'>{"DigiFolk"}</Typography>
         </Grid>
         <Grid size={4}>
             <Skeleton height={100} />
@@ -163,6 +130,8 @@ import DropdownMenu from './DropdownMenu';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import InfoIcon from '@mui/icons-material/Info';
 import ShowLyrics from './ShowLyrics';
+
+
 const LyricsContent = ({filename, router, tune, creator, options, handleChange, open, handleClose, setOpen}) => (
     <Grid container spacing={1}>
         <Grid size={7}>
@@ -354,7 +323,7 @@ export default function DashboardLayoutBasic(props) {
     const demoWindow = window ? window() : undefined;
     const [tuneName, setTuneName] = React.useState("Hover chart");
     const [tune, setTune] = React.useState(titles[0])
-    const [collection, setCollection] = React.useState(collections[0])
+    const [collection, setCollection] = React.useState(collections[2])
     const [filename, setFilename] = React.useState(filenames[0])
     const [creator, setCreator] = React.useState(creators[0])
     const [activeStep, setActiveStep] = React.useState(0);
@@ -400,7 +369,7 @@ const handleTuneChange = (value) => {
         account={null}
         navigation={NAVIGATION}
         router={router}
-        theme={demoTheme}
+        theme={customTheme}
         window={demoWindow}
         branding={{
             logo: '',

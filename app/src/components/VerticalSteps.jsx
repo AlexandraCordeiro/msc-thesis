@@ -1,5 +1,3 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
@@ -7,7 +5,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import {IconButton} from '@mui/material'
 
-export default function HorizontalLinearStepper({steps, activeStep, setActiveStep}) {
+export default function VerticalSteps({steps, activeStep, setActiveStep}) {
 
   const handleNext = (event) => {
     event.preventDefault()
@@ -41,35 +39,40 @@ export default function HorizontalLinearStepper({steps, activeStep, setActiveSte
         <IconButton type='button' disabled={activeStep === 0} onClick={handleBack} sx={{borderRadius: '50%', marginLeft: `-${(40-24) * 0.5}px`}}>
           <KeyboardArrowLeftIcon sx={{transform: 'rotate(90deg)'}}/>
         </IconButton>
-        <Stepper connector={false} orientation='vertical' activeStep={activeStep} sx={{width: '100%', height: '100%', overflow: 'hidden'}}>
-          {steps.map((label) => (
+        <Stepper connector={false} orientation='vertical' activeStep={activeStep} sx={{width: '100%', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          {steps.map((label, index) => (
             <Step
               sx={{
-                '& .MuiStepLabel-label': { 
-                  fontFamily: 'Montserrat',
-                  fontWeight: 600,
-                  color: '#906dc9'
-                },
                 '& .MuiStepIcon-root': {
-                  color: '#c0c0c0',
-                  fontWeight: 500,
+                    color: '#c0c0c0',
+                },
+                '& .MuiStepIcon-root:hover': {
+                    cursor: 'pointer'
                 },
                 '& .MuiStepIcon-root.Mui-active': {
-                  color: '#b589fc',
+                    color: '#b589fc',
+                },
+                '& .MuiStepIcon-text': {
+                    fill: '#10002a',
+                    fontSize: '13px',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600,
                 },
               }}
-              key={label} completed={false} onClick={handleNext}>
-              <StepLabel> {label == steps[activeStep] ? label : "" }</StepLabel>
+              key={label} completed={false}
+              onClick={ (event) => {
+                setActiveStep(index)
+                event.preventDefault()
+                event.stopPropagation()
+              }
+              }>
+              <StepLabel> {label == "" }</StepLabel>
             </Step>
           ))}
         </Stepper>
         <IconButton type='button' onClick={handleNext} sx={{borderRadius: '50%', marginLeft: `-${(40-24) * 0.5}px`}}>
           <KeyboardArrowRightIcon sx={{transform: 'rotate(90deg)'}}/>
         </IconButton>
-      
-
-      
-
     </div>
 )
 }

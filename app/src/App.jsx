@@ -23,10 +23,10 @@ function App() {
 
   return (
     <>
-    <DashboardLayoutBasic/>
-      {/* <div className="background">
-        <GridLayout/>
-      </div> */}
+    {/* <DashboardLayoutBasic/> */}
+    <div className="background">
+      <GridLayout/>
+    </div>
     </>
   )
 }

@@ -326,8 +326,8 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .attr("ry", '1rem')
         .attr("stroke", '#C7D0DD')
         .attr("stroke-width", "1px")
-        .attr("class", "sparkline-tooltip")
         .attr("fill", "white")
+        .attr("class", "sparkline-tooltip")
         .attr("transform", `translate(${-yOffset * 2.5}, ${-sparklineSize - (xOffset * 2.5)})`)
         .lower()
 

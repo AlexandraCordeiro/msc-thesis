@@ -23,7 +23,9 @@ export default function DropdownMenu({options, handleTuneChange, selectedValue="
         
         <Dropdown>
         <MenuButton sx={{fontFamily: 'montserrat', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyItems: 'center'}}>
-            {selectedValue}
+            <span className='button-text'>
+              {selectedValue}
+            </span>
             <KeyboardArrowDownIcon style={{fontWeight: 'normal'}}/>
         </MenuButton>
         <Menu slots={{ listbox: AnimatedListbox }} width="12px">
@@ -44,17 +46,17 @@ export default function DropdownMenu({options, handleTuneChange, selectedValue="
   );
 }
 
-const blue = {
-  50: '#F0F7FF',
-  100: '#C2E0FF',
-  200: '#99CCF3',
-  300: '#66B2FF',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E6',
-  700: '#0059B3',
-  800: '#004C99',
-  900: '#003A75',
+const purple = {
+  50:  '#f6f0ff',
+  100: '#e3d4fe',
+  200: '#d1b9fd',
+  300: '#be9dfb',
+  400: '#b589fc',  // base purple
+  500: '#a472f2',
+  600: '#935cdc',
+  700: '#7d45c4',
+  800: '#6730a6',
+  900: '#4e1f87',
 };
 
 const grey = {
@@ -79,7 +81,7 @@ const Listbox = styled('ul')(
   margin: auto;
   margin-top: 10px;  
   max-height: 250px;      
-  max-width: 200px;
+  width: 200px;
   border-radius: 12px;
   overflow: auto;
   outline: 0px;
@@ -146,12 +148,13 @@ const MenuItem = styled(BaseMenuItem)(
   cursor: default;
   user-select: none;
 
+
   &:last-of-type {
     border-bottom: none;
   }
 
   &.${menuItemClasses.focusVisible} {
-    outline: 3px solid ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
+    outline: 3px solid ${theme.palette.mode === 'dark' ? purple[600] : purple[200]};
     background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
     color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
@@ -161,8 +164,8 @@ const MenuItem = styled(BaseMenuItem)(
   }
 
   &:hover:not(.${menuItemClasses.disabled}) {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[50]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${theme.palette.mode === 'dark' ? purple[900] : purple[50]};
+    color: ${theme.palette.mode === 'dark' ? purple[100] : purple[900]};
   }
   `,
 );
@@ -174,6 +177,8 @@ const MenuButton = styled(BaseMenuButton)(
   font-size: 0.875rem;
   line-height: 1.5;
   padding: 8px 16px;
+  height: 50px;
+  width: 200px;
   border-radius: 8px;
   color: white;
   transition: all 150ms ease;
@@ -182,6 +187,10 @@ const MenuButton = styled(BaseMenuButton)(
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
 
   &:hover {
     background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
@@ -193,8 +202,15 @@ const MenuButton = styled(BaseMenuButton)(
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 4px ${theme.palette.mode === 'dark' ? blue[300] : blue[200]};
+    box-shadow: 0 0 0 4px ${theme.palette.mode === 'dark' ? purple[300] : purple[200]};
     outline: none;
+  }
+
+  .button-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   `,
 );
