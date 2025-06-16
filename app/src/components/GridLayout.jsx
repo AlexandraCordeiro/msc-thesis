@@ -27,21 +27,9 @@ import { IconButton } from '@mui/material'
 import ShowLyrics from './ShowLyrics.jsx'
 import DropdownMenu from './DropdownMenu.jsx'
 
-const Item = ({children, textAlign, fontWeight, fontFamily, fontSize, p}) => {
-  return (
-    <Box sx={{height: 'fit-content',
-              textAlign: textAlign,
-              color: 'black',
-              fontWeight: fontWeight,
-              fontFamily: fontFamily,
-              fontSize: fontSize,
-              whiteSpace: 'pre-wrap',
-              paddingBottom: p}}>
 
-    {children}
-    </Box>
-  )
-}
+import ScoreContour from '../assets/score-contour-label.svg';
+import AudioContour from '../assets/audio-contour-label.svg';
 
 const title = "Visualization of Folk Music"
 const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -96,12 +84,10 @@ export default function GridLayout() {
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
               </Grid>
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                <Item textAlign={'right'}>
                   <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
                     <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
                   </IconButton>
                   <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-                </Item>
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
@@ -131,12 +117,10 @@ export default function GridLayout() {
                   <Typography variant='h4' fontFamily={'playfair display'} color='black'>How performance differs from the score</Typography>
                 </Grid>
                 <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                  <Item textAlign={'right'}>
                     <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
                       <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
                     </IconButton>
                     <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-                  </Item>
                 </Grid>
                 
                 <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
@@ -146,13 +130,38 @@ export default function GridLayout() {
                 </Grid>
                 <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                   <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
-                  </Grid>
+                </Grid>
               
-              </Grid>
+              
 
-              <Grid sx={{height: 'fit-content'}} size={12} id='grid-12'>
+              <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
                 <SpectogramChart key={filename} tune={filename}/>
               </Grid>
+
+
+              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                  
+                  <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Loudness</Typography>
+                  <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #e0f4fd, #390160)', borderRadius: '0.5rem'}}/>
+                  <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>min</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>max</Typography>
+                  </div>
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Score Contour</Typography>
+                  <div>
+                    <img src={ScoreContour} style={{paddingBottom:'1rem'}}></img>
+                  </div>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Audio Contour</Typography>
+                  <div>
+                    <img src={AudioContour}></img>
+                  </div>
+                </div>
+              </Grid>
+
+            </Grid>
 
             </>
           )

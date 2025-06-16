@@ -1,6 +1,6 @@
 import React, {useRef, useLayoutEffect, useMemo, useCallback, useState, useEffect} from "react";
 import * as d3 from "d3";
-import {noteToMidi, hzToMidi, midiToNote, getStartOffset, fontSize} from "../functions.js";
+import {noteToMidi, hzToMidi, midiToHz, midiToNote, getStartOffset, fontSize} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import ClipLoader from "react-spinners/ClipLoader"
 
@@ -43,7 +43,7 @@ const SpectogramChart = ({tune}) => {
         // spectogram data
         const groupDataByTime = Array.from(d3.group(data.audio_spectogram_data, d => +d.time)).flatMap(d => d[1])
         const spectogramTimeDomain = [d3.min(normalizedAudioContourTime), d3.max(normalizedAudioContourTime)]
-        const spectogramFrequencyDomain = d3.extent(data.audio_spectogram_data, d => +d.freq)
+        const spectogramFrequencyDomain = [midiToHz(noteToMidi("C1")), d3.max(data.audio_spectogram_data, d => +d.freq)]
         const audioContourTimeDomain = [d3.min(normalizedAudioContourTime), d3.max(normalizedAudioContourTime)]
     
         // score
@@ -95,7 +95,14 @@ const SpectogramChart = ({tune}) => {
                 .nice()
         };
 
-        return { x, y };
+        const yLog = (innerRadius, outerRadius, domain) => {
+            return d3.scaleLog()
+            .domain(domain)
+            .range([innerRadius, outerRadius])
+            .clamp(true);
+        };
+
+        return { x, y, yLog};
     }, []);
 
     const mouseOver = useCallback((d, time, circle) => {
@@ -108,7 +115,7 @@ const SpectogramChart = ({tune}) => {
             text = `Note: ${d}`
             circle.transition()
             .attr("r", 10)
-            .attr("fill", "purple")
+            .attr("fill", "#390160")
             .attr("opacity", 0.5)
             .attr("class", "circle-in-focus")
         }
@@ -116,7 +123,7 @@ const SpectogramChart = ({tune}) => {
             text = `Frequency: ${d.toFixed(3)} Hz\nApproximate Note: ${midiToNote(hzToMidi(d))}\nTime: ${time.toFixed(3)} s`
             circle
             .attr("r", 10)
-            .attr("fill", "purple")
+            .attr("fill", "#390160")
             .attr("opacity", 0.5)
             .attr("class", "circle-in-focus")
         }
@@ -125,7 +132,7 @@ const SpectogramChart = ({tune}) => {
         .transition()
         .duration(200)
         .style("opacity", 1)
-        .style("color", 'black')
+        .style("color", '#390160')
         .style("font-family", "montserrat")
         .style("font-size", '14px')
         .text(`${text}`)
@@ -147,7 +154,7 @@ const SpectogramChart = ({tune}) => {
             circle
             .transition()
             .attr("r", 2.5)
-            .attr("fill", "black")
+            .attr("fill", "#390160")
             .attr("opacity", 1)
         }
         if (circle.attr("id") == "tooltip-audio-contour") {
@@ -181,8 +188,21 @@ const SpectogramChart = ({tune}) => {
             outerRadiusSpectogram
         } = dimensions;
 
-        const { x, y } = createScales();
+        const {offsetIndex,
+            audioContourFrequency,
+            audioContourDb,
+            audioContourTime,
+            normalizedAudioContourTime,
+            groupDataByTime,
+            spectogramTimeDomain,
+            spectogramFrequencyDomain,
+            audioContourTimeDomain,
+            scoreContourTime,
+            scoreContourNotes,
+            dbThreshold,
+            audioPathData, scoreNotesData} = variableCalculations
 
+        const { x, y, yLog} = createScales();
         // create svg
         const svg = d3.select(svgRef.current)
         .attr("width", svgWidth)
@@ -212,22 +232,10 @@ const SpectogramChart = ({tune}) => {
         const minDb = d3.min(data.audio_spectogram_data.map(d => +d.db))
     
         // audio contour
-        const {offsetIndex,
-            audioContourFrequency,
-            audioContourDb,
-            audioContourTime,
-            normalizedAudioContourTime,
-            groupDataByTime,
-            spectogramTimeDomain,
-            spectogramFrequencyDomain,
-            audioContourTimeDomain,
-            scoreContourTime,
-            scoreContourNotes,
-        dbThreshold,
-    audioPathData, scoreNotesData} = variableCalculations
+
             
     
-        var yScore = y(innerRadiusSpectogram, outerRadiusSpectogram, [noteToMidi("C2"), noteToMidi("C7")])
+        var yScore = yLog(innerRadiusSpectogram, outerRadiusSpectogram, spectogramFrequencyDomain)
         var xScore = x([0, d3.max(data.score_contour.map(d => d.end))])
         let xAudio = x(audioContourTimeDomain)
             
@@ -255,8 +263,8 @@ const SpectogramChart = ({tune}) => {
         let areaGenerator = d3.areaRadial()
         // angle 0 starts at 12 o'clock
         .angle(d => xAudio(d.time) + Math.PI / 2) 
-        .innerRadius(d => yScore(hzToMidi(+d.f0)) - 3)  
-        .outerRadius(d => yScore(hzToMidi(+d.f0)) + 3)
+        .innerRadius(d => yScore(+d.f0) - 3)  
+        .outerRadius(d => yScore(+d.f0) + 3)
         .defined(d => +d.f0) 
         .curve(d3.curveBasis); 
 
@@ -265,7 +273,7 @@ const SpectogramChart = ({tune}) => {
         audioContour.append("path")
         .datum(audioPathData)
         .attr("fill", "black")
-        .attr("fill-opacity", 0.8)
+        .attr("fill-opacity", 0.7)
         .attr("d", d => areaGenerator(d))
 
         audioContour.selectAll("circle")
@@ -275,8 +283,8 @@ const SpectogramChart = ({tune}) => {
         .attr("id", "tooltip-audio-contour")
         .attr("fill", "none")
         .style("pointer-events", "all")
-        .attr("cx", d => yScore(hzToMidi(+d.f0)) * Math.cos(xAudio(d.time)))
-        .attr("cy", d => yScore(hzToMidi(+d.f0)) * Math.sin(xAudio(d.time)))
+        .attr("cx", d => yScore(+d.f0) * Math.cos(xAudio(d.time)))
+        .attr("cy", d => yScore(+d.f0) * Math.sin(xAudio(d.time)))
         .attr("r", 10)
         .on("mouseover", (e, d) => mouseOver(d.f0, d.time, d3.select(e.target)))
         .on("mouseout", e => mouseOut(d3.select(e.target)))
@@ -290,12 +298,12 @@ const SpectogramChart = ({tune}) => {
         .enter()
             .append("line")
             .attr("fill", "none")
-            .attr("stroke", "black")
-            .attr("stroke-width", graphWidth * 0.004)
-            .attr("x1", d => yScore(noteToMidi(d.note)) * Math.cos(xScore(+d.start)))
-            .attr("y1", d => yScore(noteToMidi(d.note)) * Math.sin(xScore(+d.start)))
-            .attr("x2", d => yScore(noteToMidi(d.note)) * Math.cos(xScore(+d.end)))
-            .attr("y2", d => yScore(noteToMidi(d.note)) * Math.sin(xScore(+d.end)))
+            .attr("stroke", "#390160")
+            .attr("stroke-width", 2.5)
+            .attr("x1", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.start)))
+            .attr("y1", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.start)))
+            .attr("x2", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.end)))
+            .attr("y2", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.end)))
     
         
         
@@ -304,9 +312,9 @@ const SpectogramChart = ({tune}) => {
             .data(scoreNotesData)
             .enter()
                 .append("circle")
-                .attr("cx", d => yScore(noteToMidi(d.note)) * Math.cos(xScore(+d.time)))
-                .attr("cy", d => yScore(noteToMidi(d.note)) * Math.sin(xScore(+d.time)))
-                .attr("fill", "black")
+                .attr("cx", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.time)))
+                .attr("cy", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.time)))
+                .attr("fill", "#390160")
                 .attr("r", 2.5)
                 .attr("id", "tooltip-score-contour")
                 .on("mouseover", (e, d) => mouseOver(d.note, d.time, d3.select(e.target)))
@@ -317,7 +325,7 @@ const SpectogramChart = ({tune}) => {
         scoreContour            
     
         
-        let ySpectogram = y(innerRadiusSpectogram, outerRadiusSpectogram, spectogramFrequencyDomain)
+        let ySpectogram = yLog(innerRadiusSpectogram, outerRadiusSpectogram, spectogramFrequencyDomain)
         let xSpectogram = x(spectogramTimeDomain)
         
         const n = Math.floor(groupDataByTime.length / 513)
@@ -337,7 +345,7 @@ const SpectogramChart = ({tune}) => {
         }
 
         spectogram.selectAll("circle")
-            .data(groupDataByTime)
+            .data(d3.filter(groupDataByTime, d => +d.freq > 0))
             .enter()
             .each(function (d, i) {
                 if ((+d.db >= minDb * 0.5) && timeValues.includes(+d.time) && i % 3 == 0) {
@@ -354,16 +362,18 @@ const SpectogramChart = ({tune}) => {
                     })
                 }
             })
-        
-        
+    
+            
+
         
         let yAxis = viz.append("g")
         .attr("id", "y-axis")
         .attr("color", "black")
-        .call(d3.axisLeft(y(-innerRadiusSpectogram, -outerRadiusSpectogram, [noteToMidi("C2"), noteToMidi("C7")])).tickValues([noteToMidi("C2"), noteToMidi("C7")]).tickFormat(d => midiToNote(d)))
+        .call(d3.axisLeft(yLog(-innerRadiusSpectogram, -outerRadiusSpectogram, spectogramFrequencyDomain)).tickValues([midiToHz(noteToMidi("C1")), /* midiToHz(noteToMidi("C2")), midiToHz(noteToMidi("C3")), midiToHz(noteToMidi("C4")), midiToHz(noteToMidi("C5")), midiToHz(noteToMidi("C6")), midiToHz(noteToMidi("C7")),*/ midiToHz(noteToMidi("C8"))]).tickFormat(d => midiToNote(hzToMidi(d))))
         .selectAll("text") 
         .style('font-family', 'montserrat')
-        .style('font-size', `${fontSize(width)}px`)
+        .style('font-weight', 500)
+        .style('font-size', `12px`)
         
     
         let xAxisRadius = innerRadiusSpectogram - 7
@@ -387,9 +397,6 @@ const SpectogramChart = ({tune}) => {
         let stepXAxis = 1
         
         const ticks = d3.range(0, maxTime, stepXAxis)
-
-        console.log(maxTime)
-        console.log(ticks)
     
         const tickData = ticks.map(tick => {
             const angle = xAudio(tick)
@@ -426,8 +433,8 @@ const SpectogramChart = ({tune}) => {
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .style('font-family', 'montserrat')
-            .style('font-weight', '600')
-            .style('font-size', `${fontSize(width)}px`);
+            .style('font-weight', '500')
+            .style('font-size', `12px`);
         
         d3.selectAll(".tick").each(function(d,i){
         var tick = d3.select(this),
@@ -441,12 +448,36 @@ const SpectogramChart = ({tune}) => {
             .attr('width', bBox.width + 6)
             .attr("rx", '0.5rem')
             .attr("ry", '0.5rem')
-            .attr("stroke", '#C7D0DD')
-            .attr("stroke-width", "1px")
             .attr("fill", "white")
-            .attr("opacity", 0.7)
+            .attr("opacity", 0.6)
             .lower()    
         });
+
+        viz.append("defs")
+        .append("path")
+        .attr("id", "circlePath")
+        .attr("d", d3.arc()
+        .innerRadius(innerRadiusSpectogram)
+        .outerRadius(innerRadiusSpectogram)
+        .startAngle(-Math.PI / 1.02)
+        .endAngle(3 * Math.PI / 2))
+
+        viz.append("text")
+        .append("textPath")
+        .attr("href", "#circlePath")
+        .attr("startOffset", "25%")
+        .attr("font-family", "montserrat")
+        .attr("font-weight", 500)
+        .attr("font-size", '12px')
+        .text("Time (seconds)");
+
+
+        viz.append("text")
+        .attr("font-family", "montserrat")
+        .attr("font-weight", 500)
+        .attr("font-size", '12px')
+        .attr("transform", `translate(-8, ${-outerRadiusSpectogram - 8})`)
+        .text("Note / Frequency (Hz)");
         
         setLoading(false);
         

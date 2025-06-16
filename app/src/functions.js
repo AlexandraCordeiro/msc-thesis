@@ -54,6 +54,9 @@ export const hzToMidi = (freq) => {
     return noteToMidi(name)
 }
 
+export const midiToHz = (midi) => {
+    return 440 * Math.pow(2, (midi - 69) / 12)
+}
 
 export const midiToNote = (midi) => {
     let noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
