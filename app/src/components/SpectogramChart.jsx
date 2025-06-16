@@ -369,7 +369,7 @@ const SpectogramChart = ({tune}) => {
         let yAxis = viz.append("g")
         .attr("id", "y-axis")
         .attr("color", "black")
-        .call(d3.axisLeft(yLog(-innerRadiusSpectogram, -outerRadiusSpectogram, spectogramFrequencyDomain)).tickValues([midiToHz(noteToMidi("C1")), /* midiToHz(noteToMidi("C2")), midiToHz(noteToMidi("C3")), midiToHz(noteToMidi("C4")), midiToHz(noteToMidi("C5")), midiToHz(noteToMidi("C6")), midiToHz(noteToMidi("C7")),*/ midiToHz(noteToMidi("C8"))]).tickFormat(d => midiToNote(hzToMidi(d))))
+        .call(d3.axisLeft(yLog(-innerRadiusSpectogram, -outerRadiusSpectogram, spectogramFrequencyDomain)).tickValues([midiToHz(noteToMidi("C1")), midiToHz(noteToMidi("C2")), midiToHz(noteToMidi("C3")), midiToHz(noteToMidi("C4")), midiToHz(noteToMidi("C5")), midiToHz(noteToMidi("C6")), midiToHz(noteToMidi("C7")), midiToHz(noteToMidi("C8"))]).tickFormat(d => (midiToNote(hzToMidi(d)) == "C1" ) || (midiToNote(hzToMidi(d)) =="C8") ? midiToNote(hzToMidi(d)) : ""))
         .selectAll("text") 
         .style('font-family', 'montserrat')
         .style('font-weight', 500)
@@ -437,20 +437,24 @@ const SpectogramChart = ({tune}) => {
             .style('font-size', `12px`);
         
         d3.selectAll(".tick").each(function(d,i){
+
         var tick = d3.select(this),
             text = tick.select('text'),
             bBox = text.node().getBBox();
 
-        tick.append('rect')
-            .attr('x', bBox.x - 3)
-            .attr('y', bBox.y - 3)
-            .attr('height', bBox.height + 6)
-            .attr('width', bBox.width + 6)
-            .attr("rx", '0.5rem')
-            .attr("ry", '0.5rem')
-            .attr("fill", "white")
-            .attr("opacity", 0.6)
-            .lower()    
+            if (text.node().innerHTML == "C1" || text.node().innerHTML == "C8") {
+            tick.append('rect')
+                .attr('x', bBox.x - 3)
+                .attr('y', bBox.y - 3)
+                .attr('height', bBox.height + 6)
+                .attr('width', bBox.width + 6)
+                .attr("rx", '0.5rem')
+                .attr("ry", '0.5rem')
+                .attr("fill", "white")
+                .attr("opacity", 0.6)
+                .lower()    
+            }
+        
         });
 
         viz.append("defs")
