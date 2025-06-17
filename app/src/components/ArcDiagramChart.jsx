@@ -1,6 +1,6 @@
 import { useRef, useEffect, useLayoutEffect } from "react"
 import * as d3 from "d3"
-import {drawNoteFrequencyRings, drawSparklines, midiToNote, cursorPoint, fontSize} from "../functions.js";
+import {drawNoteFrequencyRings, drawSparklines, midiToNote, cursorPoint, fontSize, noteToMidi} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 // @ts-ignore
 import textures from 'textures'
@@ -83,19 +83,38 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
     }
 
     if (type == "music-intervals") {
-        console.log(d)
         let tooltipIntervals = d3.select("#tooltip-intervals")
         let key = `${d.source - d.target}`
         let texture = intervalTextures[`${Math.abs(d.source - d.target)}`]
-        // transition
-        tooltipIntervals
-        .style("opacity", 1)
-        .style("color", 'black')
-        .style("font-family", "montserrat")
-        .style("font-size", '14px')
-        .style("transform", `translate(${100}, 0)`)
-        .text(`${typeOfIntervals[key]}`)
+        // update
 
+
+        let tooltipWidth = 120
+        let tooltipHeight = 30
+        let offset = 10
+
+        tooltipIntervals
+        .attr("opacity", 1)
+        .attr("class", "interval-tooltip")
+        .append("rect")
+        .attr("width", tooltipWidth)
+        .attr("height", tooltipHeight)
+        .attr("x", 0)
+        .attr("y", offset)
+        .attr("rx", '0.5rem')
+        .attr("ry", '0.5rem')
+        .attr("fill", 'white')
+        .attr("stroke", "#C7D0DD")
+        .attr("stroke-width", 1)
+        
+        
+        tooltipIntervals.append("text")
+        .text(`${typeOfIntervals[key]}`)
+        .attr("x", offset)
+        .attr("y", offset * 3)
+        .attr("font-family", "montserrat")
+        .attr("font-size", '12px')
+        .attr("color", "black")
 
         d3.select("svg").call(texture)
         d3.select(e.currentTarget)
@@ -117,6 +136,7 @@ const mouseOut = (e, d, type) => {
     }
     if (type == "music-intervals") {
         let tooltipIntervals = d3.select("#tooltip-intervals")
+        tooltipIntervals.selectAll("*").remove()
         d3.select(e.currentTarget)
         .style("fill", "rgba(0, 0, 0, 0)")
     }
@@ -173,12 +193,12 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     });
 
     let opacityScale = d3.scaleLinear()
-        .range([0.2, 1])
+        .range([0.3, 1])
         .domain([d3.min(data.links.map(d => d.count)), d3.max(data.links.map(d => d.count))])
     
     let colorScale = d3.scaleLinear()
-    .range(["#fdeff9", "#ec38bc", "#ab1bbe", "#7303c0"])
-    .domain([extent[0], extent[1] / 3, 2 * extent[1] / 3, extent[1]])
+    .range(["#fc00ff", "#00dbde"])
+    .domain([noteToMidi("C1"), noteToMidi("C8")])
 
     // Add the links
     let sortedLinks = data.links.slice().sort((a, b) => {
@@ -230,7 +250,7 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     })
     .style("fill","rgba(0,0,0,0)")
     .style("pointer-events", "all")
-    .attr("stroke", d => colorScale((x(idToNode[d.source].id) + x(idToNode[d.target].id)) / 2))
+    .attr("stroke", d => colorScale((idToNode[d.source].id + idToNode[d.target].id) / 2))
     .attr("stroke-width", 2)
     .attr("opacity", d => opacityScale(d.count))
     .on("mouseover", (e, d) => mouseOver(e, d, data, graphHeight, graphWidth, x, "music-intervals"))
@@ -258,6 +278,7 @@ const ArcDiagramChart = ({tune}) => {
         const svg = d3.select(svgRef.current)
         .attr("width", svgWidth)
         .attr("height", svgHeight)
+        .style("overflow", "visible")
         // .attr("transform", `translate(${width * 0.07}, 0)`)
         
         // clear all previous content on refresh
@@ -266,17 +287,17 @@ const ArcDiagramChart = ({tune}) => {
 
         const group = svg.append("g")
         .attr("id", "align-group")
-        .attr("transform", `translate(${svgWidth * 0.1 * 0.5},${graphHeight / 3})`)
+        .attr("transform", `translate(${svgWidth * 0.1 * 0.25},${graphWidth * 0.3})`)
         
         group
         .append("g")
         .attr("id", "tooltip-sparklines")
         .attr("style", "opacity: 0;")
 
-        d3.select("body")
-        .append("div")
+       svg
+        .append("g")
         .attr("id", "tooltip-intervals")
-        .attr("style", "position: absolute; opacity: 0;")
+        // .attr("style", "position: absolute; opacity: 0;")
 
         // load data
         d3.json(filename).then(function(data) {

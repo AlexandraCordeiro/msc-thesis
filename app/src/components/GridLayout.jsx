@@ -29,7 +29,16 @@ import DropdownMenu from './DropdownMenu.jsx'
 
 
 import ScoreContour from '../assets/score-contour-label.svg';
+import AscendingDescending from '../assets/ascending-descending-label.svg';
 import AudioContour from '../assets/audio-contour-label.svg';
+import ArcLabel from '../assets/arc-label.svg'
+import Matrix from '../assets/matrix.svg'
+
+import { useWindowSize } from './UseWindowSize.jsx'
+import { useEffect } from 'react'
+import { justifyContent } from '@mui/system'
+
+
 
 const title = "Visualization of Folk Music"
 const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -51,15 +60,22 @@ const dividerStyle = {
 }
 
 export default function GridLayout() {
+  const [width, height] = useWindowSize()
   const [tune, setTune] = React.useState(titles[0])
-  const [collection, setCollection] = React.useState(collections[0])
+  const [tuneName, setTuneName] = React.useState("Hover chart");
+  const [collection, setCollection] = React.useState(collections[3])
   const [filename, setFilename] = React.useState(filenames[0])
   const [creator, setCreator] = React.useState(creators[0])
   const [activeStep, setActiveStep] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
+  const [graphWidth, setGraphWidth] = React.useState(0)
 
+  useEffect(() => {
+    setGraphWidth(width * 0.9)
+  }, [width])
+  
   const handleTuneChange = (value) => {
     setTune(value)
     const index = titles.indexOf(value);
@@ -95,15 +111,39 @@ export default function GridLayout() {
                   It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                 </Typography>
               </Grid>
+
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
-                </Grid>
+              </Grid>
             
+              <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
+                <LyricsSimilarityMatrix tuneIndex={filenames.indexOf(filename)}/>
+              </Grid>
+
+              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                  
+                  <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Matrix</Typography>
+                  
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' paddingBottom='1rem'>
+                  Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j
+                  </Typography>
+
+                  <div>
+                      <img src={Matrix} style={{paddingBottom:'1rem'}}></img>
+                  </div>
+                </div>
+
+              </Grid>
             </Grid>
 
-            <Grid sx={{height: 'fit-content'}} size={12} id='grid-12'>
-              <LyricsSimilarityMatrix tuneIndex={filenames.indexOf(filename)}/>
-            </Grid>
+
+
+
+          
+
+            
 
           </>
         )
@@ -144,7 +184,7 @@ export default function GridLayout() {
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
                   <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Loudness</Typography>
-                  <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #e0f4fd, #390160)', borderRadius: '0.5rem'}}/>
+                  <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #e0f4fd, #390160)', borderRadius: '0.25rem'}}/>
                   <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>min</Typography>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>max</Typography>
@@ -175,12 +215,11 @@ export default function GridLayout() {
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
               </Grid>
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                <Item textAlign={'right'}>
-                  <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
-                    <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
-                  </IconButton>
-                  <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-                </Item>
+                <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
+                  <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
+                </IconButton>
+                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
+                
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
@@ -191,21 +230,124 @@ export default function GridLayout() {
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </Grid>
-            
+
+                <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
+                  <ArcDiagramChart tune={filename}/>
+                </Grid>
+
+                <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                  
+                  <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'}>Musical Intervals</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat'>
+                  Each arc shows a musical interval, which is the distance between two adjacent notes in a piece of music.
+                  </Typography>
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingTop='1rem' paddingBottom={'1rem'}>Total Note Count</Typography>
+
+                  <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 7}}>
+
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center'}}>
+                      <div style={{width: `${window.innerWidth * 0.8 * 0.02}px`, height: `${window.innerWidth * 0.8 * 0.02}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
+                      <Typography variant='caption' color='black' fontFamily='montserrat' fontWeight='400' textAlign='center'>1</Typography>
+                    </div>
+
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center'}}>
+                      <div style={{width: `${window.innerWidth * 0.8 * 0.11}px`, height: `${window.innerWidth * 0.8 * 0.11}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
+                      <Typography variant='caption' color='black' fontFamily='montserrat' fontWeight='400' textAlign='center'>max</Typography>
+                    </div>
+
+                  </div>
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'}>Note Range</Typography>
+                  <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #fc00ff 0%, #00dbde 100%)', borderRadius: '0.25rem'}}/>
+                  <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>C1</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>G4</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>C8</Typography>
+                  </div>
+
+                  
+         
+                </div>
+              </Grid>
+
             </Grid>
 
-            <Grid sx={{height: 'fit-content'}} size={12} id='grid-12'>
-              <ArcDiagramChart tune={filename}/>
-            </Grid>
+            
 
           </>
         )
+
+        case 3:
+          return (
+            <>
+            <Grid container>
+              <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
+                <Typography variant='h4' fontFamily={'playfair display'} color='black'>A look into the whole collection</Typography>
+              </Grid>
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
+                <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
+                  <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
+                </IconButton>
+                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
+                
+              </Grid>
+              
+              <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
+                <Typography variant='body' color='black' fontFamily={'montserrat'}>
+                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                </Typography>
+              </Grid>
+
+              <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}}></Grid>
+
+              <Grid size={4} paddingTop='1rem'>
+                <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='h5'>{collection}</Typography>
+                <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='p'>{tuneName}</Typography>
+              </Grid>
+
+              <Grid size={8}></Grid>
+
+                <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
+                  <CollectionOfTunesRangeChart collection={collection} setTuneName={setTuneName}/>
+                </Grid>
+
+                <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                  
+                  <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
+
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' style={{whiteSpace: "pre-line"}}>
+                  {"Each radial line represents an arc diagram for a tune in the collection.\nAs in the previous visualisation, the arc diagrams refer to musical intervals."}
+                  </Typography>
+
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'} paddingTop={'1rem'}>Note Range</Typography>
+                  <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #fc00ff 0%, #00dbde 100%)', borderRadius: '0.25rem'}}/>
+                  <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>C1</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>G4</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat'>C8</Typography>
+                  </div>
+         
+                </div>
+              </Grid>
+
+            </Grid>
+
+            
+
+          </>
+          )
       default:
         setActiveStep(0)
     }
   }
 
-  /* Collection of Tunes*/
+
   return (
 
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', position: 'relative' }}>
@@ -254,27 +396,7 @@ export default function GridLayout() {
 
             <Grid size={12}>
               {selectViz(activeStep)}
-            </Grid>
-
-          {/* <Grid size={12}>
-            <Item fontWeight={600} fontSize={'40px'} fontFamily={'playfair display'} textAlign='left' p={'1.5rem'} >{title}</Item>
-          </Grid>
-          <Grid size={6}>
-            <Item fontWeight={600} fontSize={'25px'} fontFamily={'montserrat'} textAlign='left' p={'1.5rem'}>{"Subtitle"}</Item>
-          </Grid>
-          <Grid size={5}>
-            <Item fontWeight={500} fontSize={'14px'} fontFamily={'montserrat'} textAlign='left' p={'1.5rem'} >{introText}</Item>
-          </Grid>
-          <Grid size={12}>
-            <Item fontWeight={600} fontSize={'25px'} fontFamily={'amiri'} textAlign='center' p={'1.5rem'} >{}</Item>
-            <Divider sx={dividerStyle}></Divider>
-          </Grid>
-          <Grid size={12}>
-            {selectViz(activeStep)}
-          </Grid> */}
-
-          
-
+            </Grid>         
         </Grid>
       </Box>
     </Box>

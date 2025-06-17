@@ -57,7 +57,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName}) => {
         d3.json(filename).then(function(data) {
             
             var ids = data.flatMap(d => d.nodes).map(d => d.id)
-            let extent = d3.extent(ids)
+            let extent = [noteToMidi("C1"), noteToMidi("C8")]
 
             var segmentInnerRadius = calcInnerAndOutterRadius(ids)[0]
             var segmentOutterRadius = calcInnerAndOutterRadius(ids)[1]

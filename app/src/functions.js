@@ -23,7 +23,6 @@ export const fontSize = (windowWidth) => {
         return 14
     }
     return 14
-
 }
 
 export const noteToMidi = (n) => {
@@ -91,12 +90,12 @@ export function cursorPoint(evt, svg){
 export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
 
     let opacityScale = d3.scaleLinear()
-    .range([0.05, 1])
+    .range([0.1, 1])
     .domain([d3.min(data.links.map(d => d.count)), d3.max(data.links.map(d => d.count))])
 
     let colorScale = d3.scaleLinear()
-    .range(["#fdeff9", "#ec38bc", "#ab1bbe", "#7303c0"])
-    .domain([extent[0], extent[1] / 3, 2 * extent[1] / 3, extent[1]])
+    .range(["#fc00ff", "#00dbde"])
+    .domain([noteToMidi("C1"), noteToMidi("C8")])
 
     // Add links between nodes
     const idToNode = {};
@@ -146,7 +145,7 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
         return path
     })
     .style("fill","none")
-    .attr("stroke", d => colorScale((x(idToNode[d.source].id) + x(idToNode[d.target].id)) / 2))
+    .attr("stroke", d => colorScale((idToNode[d.source].id + idToNode[d.target].id) / 2))
     .attr("stroke-width", "0.05rem"/* d => d.count */)
     .attr("stroke-opacity", d => opacityScale(d.count))
 

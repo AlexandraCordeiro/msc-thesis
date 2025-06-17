@@ -3,6 +3,7 @@
   height: 100%;
   background: #f5e4e8;
   background: radial-gradient(circle, #f5e4e8 35%, #d1dffd 100%);
+  padding: 2rem;
 }
 
 #tooltip-intervals{
@@ -75,5 +76,9 @@
 }
 
 .sparkline-tooltip{
+  filter: drop-shadow(0 1px 2px #0000003d)
+}
+
+.interval-tooltip{
   filter: drop-shadow(0 1px 2px #0000003d)
 }

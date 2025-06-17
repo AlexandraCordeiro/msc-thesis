@@ -153,7 +153,7 @@ const SpectogramChart = ({tune}) => {
         if (circle.attr("id") == "tooltip-score-contour") {
             circle
             .transition()
-            .attr("r", 2.5)
+            .attr("r", 3)
             .attr("fill", "#390160")
             .attr("opacity", 1)
         }
@@ -299,7 +299,7 @@ const SpectogramChart = ({tune}) => {
             .append("line")
             .attr("fill", "none")
             .attr("stroke", "#390160")
-            .attr("stroke-width", 2.5)
+            .attr("stroke-width", 3)
             .attr("x1", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.start)))
             .attr("y1", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.start)))
             .attr("x2", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.end)))
@@ -315,7 +315,7 @@ const SpectogramChart = ({tune}) => {
                 .attr("cx", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.time)))
                 .attr("cy", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.time)))
                 .attr("fill", "#390160")
-                .attr("r", 2.5)
+                .attr("r", 3)
                 .attr("id", "tooltip-score-contour")
                 .on("mouseover", (e, d) => mouseOver(d.note, d.time, d3.select(e.target)))
                 .on("mouseout", e => mouseOut(d3.select(e.target)))
