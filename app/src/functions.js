@@ -435,3 +435,11 @@ export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContaine
     })
     
 }
+
+export function removeElement(id) {
+    var elem = document.getElementById(id);
+    if (elem && elem.parentNode) {
+        return elem.parentNode.removeChild(elem);
+    }
+    return null;
+}

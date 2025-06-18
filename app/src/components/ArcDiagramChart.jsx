@@ -1,6 +1,6 @@
 import { useRef, useEffect, useLayoutEffect } from "react"
 import * as d3 from "d3"
-import {drawNoteFrequencyRings, drawSparklines, midiToNote, cursorPoint, fontSize, noteToMidi} from "../functions.js";
+import {drawNoteFrequencyRings, drawSparklines, midiToNote, removeElement, fontSize, noteToMidi} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 // @ts-ignore
 import textures from 'textures'
@@ -260,6 +260,12 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
 }
 
 const ArcDiagramChart = ({tune, gridId}) => {
+
+
+    // remove unwanted tooltips
+    removeElement("tooltip-lyrics")
+    removeElement("tooltip-score")
+
     const svgRef = useRef(null)
     const [width, height] = useWindowSize(gridId);
     console.log([width, height])

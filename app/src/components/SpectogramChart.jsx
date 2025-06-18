@@ -1,10 +1,16 @@
 import React, {useRef, useLayoutEffect, useMemo, useCallback, useState, useEffect} from "react";
 import * as d3 from "d3";
-import {noteToMidi, hzToMidi, midiToHz, midiToNote, getStartOffset, fontSize} from "../functions.js";
+import {noteToMidi, hzToMidi, midiToHz, midiToNote, getStartOffset, fontSize, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import ClipLoader from "react-spinners/ClipLoader"
 
 const SpectogramChart = ({tune, gridId}) => {
+
+    // remove unwanted tooltips
+    removeElement("tooltip-lyrics")
+    removeElement("tooltip-sparklines")
+    removeElement("tooltip-intervals")
+
     const svgRef = useRef(null);
     const [width, height] = useWindowSize(gridId);
     const filename = `/audio_vs_score/${tune}_audio_vs_score.json`

@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useLayoutEffect} from "react";
 import * as d3 from "d3";
-import {drawLinks, drawXAxis, radsToDegrees} from "../functions.js";
+import {drawLinks, drawXAxis, radsToDegrees, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import { noteToMidi } from "../functions.js";
 
@@ -23,6 +23,11 @@ function calcInnerAndOutterRadius(data) {
 
 const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interaction}) => {
 
+    // remove unwanted tooltips
+    removeElement("tooltip-lyrics")
+    removeElement("tooltip-sparklines")
+    removeElement("tooltip-intervals")
+    removeElement("tooltip-score")
 
     const svgRef = useRef(null);
     const [width, height] = useWindowSize(gridId);
