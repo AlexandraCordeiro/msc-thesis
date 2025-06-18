@@ -4,12 +4,12 @@
 import { useLayoutEffect, useState } from 'react';
 
 
-export function useWindowSize() {
+export function useWindowSize(id) {
   const [size, setSize] = useState([0, 0]);
 
   useLayoutEffect(() => {
     
-    const main = document.getElementById('grid-12')
+    const main = document.getElementById(id)
     if (!main) return
     const resizeObserver = new ResizeObserver(entries => {
       for (let entry of entries) {
@@ -27,3 +27,4 @@ export function useWindowSize() {
   }, []);
   return size;
 }
+

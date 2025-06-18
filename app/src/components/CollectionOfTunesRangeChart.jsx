@@ -21,12 +21,13 @@ function calcInnerAndOutterRadius(data) {
 }
 
 
-const CollectionOfTunesRangeChart = ({collection, setTuneName}) => {
+const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interaction}) => {
 
 
     const svgRef = useRef(null);
-    const [width, height] = useWindowSize();
+    const [width, height] = useWindowSize(gridId);
     let filename = `/collection_of_tunes_intervals/${collection}.json`
+
     useLayoutEffect(() => {
         // D3 Code
 
@@ -132,34 +133,39 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName}) => {
 
             group.selectAll('.segment')
             .on('mouseover', function (e, d) {
-                const hovered = d3.select(this);
-                let scaleValue = 1 /* (svgWidth / graphWidth) * 0.6 */
-                hovered
-                .transition()
-                .ease(d3.easeCubicIn)
-                .attr("transform", `${d.originalTransform} scale(${scaleValue})`)
-                group.selectAll('.links').attr("opacity", 0.13);
-                hovered.selectAll('.links').attr("opacity", 1);
-                hovered.selectAll('.x-axis').attr("opacity", 1);
-                hovered.select('.donut').attr("opacity", 0);
-                hovered.select('.symbol').attr("fill", "#7303c0")
-                hovered.select('.donut').attr("box-shadow", "rgba(0, 0, 0, 0.24) 0px 3px 8px")
-                setTuneName(hovered.attr("id"))
+
+                if (interaction) {
+                    const hovered = d3.select(this);
+                    let scaleValue = 1 /* (svgWidth / graphWidth) * 0.6 */
+                    hovered
+                    .transition()
+                    .ease(d3.easeCubicIn)
+                    .attr("transform", `${d.originalTransform} scale(${scaleValue}, ${scaleValue})`)
+                    group.selectAll('.links').attr("opacity", 0.13);
+                    hovered.selectAll('.links').attr("opacity", 1);
+                    hovered.selectAll('.x-axis').attr("opacity", 0.6);
+                    hovered.select('.donut').attr("opacity", 0);
+                    hovered.select('.symbol').attr("fill", "#7303c0")
+                    hovered.select('.donut').attr("box-shadow", "rgba(0, 0, 0, 0.24) 0px 3px 8px")
+                    setTuneName(hovered.attr("id"))
+                }
 
             })
             .on('mouseout', function (e, d) {
-                // Reset everything
-                const hovered = d3.select(this);
-                hovered
-                .transition()
-                .attr("transform", d.originalTransform)
 
-                // hovered.attr("transform", "scale(1)")
-                group.selectAll('.x-axis').attr("opacity", 0);
-                group.selectAll('.links').attr("opacity", 1);
-                group.selectAll('.donut').attr("fill", "lightgray").attr("opacity", 0);
-                group.selectAll('.symbol').attr("fill", "none")
-                setTuneName("Hover chart")
+                if (interaction) {
+                    // Reset everything
+                    const hovered = d3.select(this);
+                    hovered
+                    .transition()
+                    .attr("transform", d.originalTransform)
+    
+                    group.selectAll('.x-axis').attr("opacity", 0);
+                    group.selectAll('.links').attr("opacity", 1);
+                    group.selectAll('.donut').attr("fill", "lightgray").attr("opacity", 0);
+                    group.selectAll('.symbol').attr("fill", "none")
+                    setTuneName("Hover chart")
+                }
             });
 
 

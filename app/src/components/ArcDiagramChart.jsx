@@ -259,9 +259,9 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     return links
 }
 
-const ArcDiagramChart = ({tune}) => {
+const ArcDiagramChart = ({tune, gridId}) => {
     const svgRef = useRef(null)
-    const [width, height] = useWindowSize();
+    const [width, height] = useWindowSize(gridId);
     console.log([width, height])
     const filename = `/music_intervals/${tune}_music_intervals.json`
     

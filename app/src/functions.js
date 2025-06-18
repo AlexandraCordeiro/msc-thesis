@@ -112,6 +112,7 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     .data(data.links)
     .join('path')
     .attr('d', (d, i) => {
+        console.log(d.name)
         let y = 0
         let startid = idToNode[d.source]
         let endid = idToNode[d.target]
@@ -344,6 +345,8 @@ export function drawXAxis(data, group, graphHeight, x, extent) {
     // display x axis
     const noteNamesAxis = group.append("g")
     .attr("color", "black")
+    .attr("stroke-width", 1)
+    .attr("font-size", "12px")
     .attr("id", "note-names-x-axis")
 
     console.log(extent)

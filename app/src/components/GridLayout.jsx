@@ -46,7 +46,7 @@ const howToRead = "How to read this visualization"
 
 const titles = csv.map(d => d.title)
 const filenames = csv.map(d => d.identifier)
-const collections = ["goodman_vol_1", "goodman_vol_2", "IE_1797_BT_EB", "IE-2019-D-HLS", "IE-2021-KY-AP", "IE-2023-DL-TP"]
+const collections = ["goodman_vol_1", "goodman_vol_2", "IE_1797_BT_EB", "IE-2019-D-HLS", "IE-2021-KY-AP", "IE-2023-DL-TP", "Archivo Dublin", "Cancionero de Torner", "Cancionero popular", "Collection of Country Dances", "Dance music of Ireland", "Gems of Irish Melody", "Traditional Irish Dance Tunes Composed by James Kelly (vol.1)", "Jigs and Reels", "Ryan’s Mammoth Collection"]
 const creators = csv.map(d => d.creatorP)
 const steps = ['Lyrics', 'Performance', 'Score', 'Collection'];
 const lyrics = csv.map(d => d.lyrics)
@@ -116,8 +116,8 @@ export default function GridLayout() {
                 <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
               </Grid>
             
-              <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
-                <LyricsSimilarityMatrix tuneIndex={filenames.indexOf(filename)}/>
+              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+                <LyricsSimilarityMatrix tuneIndex={filenames.indexOf(filename)} gridId={'grid-size'}/>
               </Grid>
 
               <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
@@ -174,8 +174,8 @@ export default function GridLayout() {
               
               
 
-              <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
-                <SpectogramChart key={filename} tune={filename}/>
+              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+                <SpectogramChart key={filename} tune={filename} gridId={'grid-size'}/>
               </Grid>
 
 
@@ -218,7 +218,7 @@ export default function GridLayout() {
                 <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
                   <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
                 </IconButton>
-                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
+                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune} gridId={'grid-size'}/>
                 
               </Grid>
               
@@ -231,8 +231,8 @@ export default function GridLayout() {
                 <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </Grid>
 
-                <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
-                  <ArcDiagramChart tune={filename}/>
+                <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+                  <ArcDiagramChart tune={filename} gridId={'grid-size'}/>
                 </Grid>
 
                 <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
@@ -280,20 +280,22 @@ export default function GridLayout() {
 
           </>
         )
-
+        
+        /* Collection of Tunes */
         case 3:
           return (
             <>
             <Grid container>
+
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>A look into the whole collection</Typography>
               </Grid>
+
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
                 <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
                   <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
                 </IconButton>
                 <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-                
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
@@ -309,13 +311,11 @@ export default function GridLayout() {
                 <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='p'>{tuneName}</Typography>
               </Grid>
 
-              <Grid size={8}></Grid>
+              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+                <CollectionOfTunesRangeChart  interaction={true} collection={collection} setTuneName={setTuneName} gridId='grid-size'/>
+              </Grid>
 
-                <Grid sx={{height: 'fit-content'}} size={10} id='grid-12'>
-                  <CollectionOfTunesRangeChart collection={collection} setTuneName={setTuneName}/>
-                </Grid>
-
-                <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
+              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
                 <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
@@ -332,11 +332,86 @@ export default function GridLayout() {
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>G4</Typography>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>C8</Typography>
                   </div>
-         
+        
                 </div>
               </Grid>
 
-            </Grid>
+              <Grid sx={{height: 'fit-content'}} size={4} id='small-multiples'>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[0]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[0]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[1]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[1]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[2]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[2]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[3]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[3]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[4]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[4]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[5]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[5]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[6]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[6]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[7]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[7]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[8]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[8]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[9]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[9]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[10]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[10]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[11]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[11]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[12]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[12]}/>
+              </Grid>
+
+              <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[13]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[13]}/>
+              </Grid>
+
+              {/* <Grid sx={{height: 'fit-content'}} size={4}>
+                <Typography variant='caption' color={'black'} fontFamily='montserrat'>{`${collections[14]}`}</Typography>
+                <CollectionOfTunesRangeChart  interaction={false} gridId={'small-multiples'} collection={collections[14]}/>
+              </Grid> */}
+
+          </Grid>
 
             
 
@@ -357,7 +432,6 @@ export default function GridLayout() {
       position: 'absolute',
       left: 0,
       top: 0,
-      paddingTop: '60vh',
       paddingLeft: '4%',
       }}
       >

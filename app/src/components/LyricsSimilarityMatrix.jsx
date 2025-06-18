@@ -3,9 +3,9 @@ import * as d3 from "d3";
 import {setOfTokensFromString, arrayOfTokensFromString, cleanString, lyricsZoomBehavior, fontSize} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 
-const LyricsSimilarityMatrix = ({tuneIndex}) => {
+const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     const svgRef = useRef(null);
-    const [width, height] = useWindowSize();
+    const [width, height] = useWindowSize(gridId);
     // set the dimensions and margins of the graph
     // useMemo() stores calculations
     // prevents expensive calculations on new renders

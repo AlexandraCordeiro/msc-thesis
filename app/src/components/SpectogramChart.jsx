@@ -4,9 +4,9 @@ import {noteToMidi, hzToMidi, midiToHz, midiToNote, getStartOffset, fontSize} fr
 import {useWindowSize} from "./UseWindowSize.jsx"
 import ClipLoader from "react-spinners/ClipLoader"
 
-const SpectogramChart = ({tune}) => {
+const SpectogramChart = ({tune, gridId}) => {
     const svgRef = useRef(null);
-    const [width, height] = useWindowSize();
+    const [width, height] = useWindowSize(gridId);
     const filename = `/audio_vs_score/${tune}_audio_vs_score.json`
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
