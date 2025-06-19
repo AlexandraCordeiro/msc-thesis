@@ -156,10 +156,10 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
             
                 
                 
-                
+                console.log("zoomContainer transform:", zoomContainer.attr("transform"));
         
-                const xAxis = chart.append("g").attr("id", "x-axis")
-                const yAxis = chart.append("g").attr("id", "y-axis")
+                const xAxis = chart.append("g").attr("id", "x-axis").attr("width", graphWidth)
+                const yAxis = chart.append("g").attr("id", "y-axis").attr("width", graphWidth)
 
                 let ratio = 12
                 const zoom = lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio)

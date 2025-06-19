@@ -23,22 +23,49 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import VerticalSteps from './VerticalSteps.jsx'
-import { IconButton } from '@mui/material'
+import { Icon, IconButton } from '@mui/material'
 import ShowLyrics from './ShowLyrics.jsx'
 import DropdownMenu from './DropdownMenu.jsx'
-
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 import ScoreContour from '../assets/score-contour-label.svg';
 import AscendingDescending from '../assets/ascending-descending-label.svg';
 import AudioContour from '../assets/audio-contour-label.svg';
 import ArcLabel from '../assets/arc-label.svg'
 import Matrix from '../assets/matrix.svg'
+import GoodmanVol1 from '../assets/Goodman Volume 1.svg'
+import GoodmanVol2 from '../assets/Goodman Volume 2.svg'
+
+import OldIrishFolkMusicSongs from '../assets/Old Irish Folk Music and Songs.svg'
+import FolkSongbook from '../assets/Folk Songbook.svg'
+import ArchivoDublin from '../assets/Archivo Dublin.svg'
+import CollectionOfCountryDances from '../assets/Collection of Country Dances.svg'
+
+import ChildrenSongs from '../assets/Children’s songs, rhymes and riddles collected by Hugh Shields.svg'
+import EdwardCollection from '../assets/Edward Bunting’s Collection.svg'
+
+import JigsAndReels from '../assets/Jigs and Reels.svg'
+import RyanCollectionPart2 from '../assets/Ryan’s Mammoth Collection Part 2.svg'
+import RyanCollectionPart1 from '../assets/Ryan’s Mammoth Collection Part 1.svg'
+
+import TraditionalIrishDanceTunes from '../assets/Traditional Irish Dance Tunes Composed by James Kelly (vol.1).svg'
+import TommyPeoples from '../assets/Tommy Peoples.svg'
+import SelectionManuscripts from '../assets/Selection of Manuscripts by Pádraig O\'Keeffe.svg'
+import GemsIrishMelody from '../assets/Gems of Irish Melody.svg'
+
+import DanceMusic from '../assets/Dance Music of Ireland.svg'
+
+
+
+
+
+
 
 import { useWindowSize } from './UseWindowSize.jsx'
 import { useEffect } from 'react'
 import { justifyContent } from '@mui/system'
 
-
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const title = "Visualization of Folk Music"
 const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -62,15 +89,15 @@ const dividerStyle = {
 export default function GridLayout() {
   const [width, height] = useWindowSize()
   const [tune, setTune] = React.useState(titles[0])
-  const [tuneName, setTuneName] = React.useState("Hover chart");
+  const [tuneName, setTuneName] = React.useState("Hover chart to find out more");
   const [collection, setCollection] = React.useState(collections[3])
   const [filename, setFilename] = React.useState(filenames[0])
   const [creator, setCreator] = React.useState(creators[0])
   const [activeStep, setActiveStep] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  const [buttonClick, setButton] = React.useState(false);
+  const handleButton = () => setButton(!buttonClick);
   const [graphWidth, setGraphWidth] = React.useState(0)
+
 
   useEffect(() => {
     setGraphWidth(width * 0.9)
@@ -99,12 +126,7 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} id='section-title'>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
               </Grid>
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                  <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
-                    <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
-                  </IconButton>
-                  <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-              </Grid>
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -116,26 +138,52 @@ export default function GridLayout() {
                 <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
               </Grid>
             
-              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+              <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
                 <LyricsSimilarityMatrix tuneIndex={filenames.indexOf(filename)} gridId={'grid-size'}/>
               </Grid>
 
-              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
-                  
-                  <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Matrix</Typography>
-                  
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' paddingBottom='1rem'>
-                  Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j
-                  </Typography>
 
-                  <div>
-                      <img src={Matrix} style={{paddingBottom:'1rem'}}></img>
+                <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                  {buttonClick ? (
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', maxWidth: '200px'}}>
+                    
+                    <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding={'1rem'}>How to Read</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Matrix</Typography>
+                    
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem'>
+                    Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j
+                    </Typography>
+
+                    <div style={{alignSelf: 'center'}}>
+                        <img src={Matrix} style={{paddingBottom:'1rem'}}></img>
+                    </div>
+
+                    <div style={{alignSelf: 'center', padding:'1rem'}}>
+                      <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Show lyrics</Typography>
+                      <IconButton onClick={handleButton}>
+                        <KeyboardArrowRightIcon/>
+                      </IconButton>
+                    </div>
                   </div>
-                </div>
 
-              </Grid>
+                  ) : 
+                  (
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px', maxWidth: '200px', maxHeight: '400px', overflow: 'auto'}}>
+                    
+                    <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding='1rem' >Lyrics</Typography>
+                    
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem' whiteSpace='pre-line'>{lyrics[filenames.indexOf(filename)]}</Typography>
+
+                    <div style={{alignSelf: 'center', padding:'1rem'}}>
+                      <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Go back</Typography>
+                      <IconButton onClick={handleButton}>
+                        <KeyboardArrowLeftIcon/>
+                      </IconButton>
+                    </div>
+                  </div>
+                  )}
+                </Grid>
+
             </Grid>
 
 
@@ -156,12 +204,7 @@ export default function GridLayout() {
                 <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                   <Typography variant='h4' fontFamily={'playfair display'} color='black'>How performance differs from the score</Typography>
                 </Grid>
-                <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                    <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
-                      <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
-                    </IconButton>
-                    <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-                </Grid>
+                <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
                 
                 <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                   <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -180,7 +223,7 @@ export default function GridLayout() {
 
 
               <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
                   <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Loudness</Typography>
@@ -214,13 +257,7 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
               </Grid>
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
-                  <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
-                </IconButton>
-                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune} gridId={'grid-size'}/>
-                
-              </Grid>
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -236,7 +273,7 @@ export default function GridLayout() {
                 </Grid>
 
                 <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
 
@@ -290,13 +327,7 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>A look into the whole collection</Typography>
               </Grid>
-
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}>
-                <IconButton onClick={handleOpen} sx={{width: '3rem', height: '3rem'}}>
-                  <InfoIcon sx={{fontSize: '1.8rem', color: "#b589fc", fontSize: '1.8rem'}}/>
-                </IconButton>
-                <ShowLyrics open={open} handleClose={handleClose} lyrics={lyrics[filenames.indexOf(filename)]} tune={tune}/>
-              </Grid>
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -316,7 +347,7 @@ export default function GridLayout() {
               </Grid>
 
               <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '1rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
 
@@ -338,90 +369,122 @@ export default function GridLayout() {
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center' id='small-multiples'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[0]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[0]}/>
+                <div>
+                  <img src={GoodmanVol1} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[1]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[1]}/>
+                <div>
+                  <img src={GoodmanVol2} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[2]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[2]}/>
+                <div>
+                  <img src={EdwardCollection} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid size={12} padding={'1rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[3]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[3]}/>
+                <div>
+                  <img src={ChildrenSongs} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[4]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[4]}/>
+                <div>
+                  <img src={SelectionManuscripts} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[5]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[5]}/>
+                <div>
+                  <img src={TommyPeoples} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid size={12} padding={'1rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[6]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[6]}/>
+                <div>
+                  <img src={ArchivoDublin} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[7]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[7]}/>
+                <div>
+                  <img src={FolkSongbook} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[8]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[8]}/>
+                <div>
+                  <img src={CollectionOfCountryDances} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid size={12} padding={'1rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[9]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[9]}/>
+                <div>
+                  <img src={DanceMusic} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[10]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[10]}/>
+                <div>
+                  <img src={GemsIrishMelody} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[11]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[11]}/>
+                <div>
+                  <img src={TraditionalIrishDanceTunes} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid size={12} padding={'1rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[12]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[12]}/>
+                <div>
+                  <img src={JigsAndReels} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[13]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[13]}/>
+                <div>
+                  <img src={RyanCollectionPart1} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[14]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[14]}/>
+                <div>
+                  <img src={RyanCollectionPart2} width={'100%'}></img>
+                </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[15]}`}</Typography>
-                <CollectionOfTunesRangeChart interaction={false} gridId={'small-multiples'} collection={collections[15]}/>
+                <div>
+                  <img src={OldIrishFolkMusicSongs} width={'100%'}></img>
+                </div>
               </Grid>
 
           </Grid>
@@ -438,9 +501,9 @@ export default function GridLayout() {
 
   return (
 
-    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
 
-      <Box sx={{width: '80%',  margin: 'auto', display: 'flex', alignItems: 'flex-start'}}>
+      <Box sx={{width: '80%', display: 'flex', alignItems: 'flex-start'}}>
         <Grid container spacing={4}>
 
             {/* Intro */}
@@ -474,11 +537,11 @@ export default function GridLayout() {
             </Grid>         
         </Grid>
       </Box>
-      {/* {console.log(document.getElementById("section-title").getBoundingClientRect())} */}
+      
       <Box
         sx={{
         position: 'absolute',
-        left: 0,
+        left: '2.5%',
         top: `${window.innerHeight}`,
         }}
         >
