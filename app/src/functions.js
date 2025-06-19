@@ -102,7 +102,8 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     data.nodes.forEach(function (n) {
         idToNode[n.id] = n;
     });
-
+    
+    console.log(idToNode)
     // Add the links
     const links = group
     .append('g')
@@ -112,8 +113,9 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     .data(data.links)
     .join('path')
     .attr('d', (d, i) => {
-        console.log(d.name)
         let y = 0
+        console.log(d.source)
+        console.log(d.target)
         let startid = idToNode[d.source]
         let endid = idToNode[d.target]
         let start = x(idToNode[d.source].id)      // start node on the x axis

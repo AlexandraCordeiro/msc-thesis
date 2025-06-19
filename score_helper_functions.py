@@ -100,12 +100,12 @@ class Score():
                 measure.append(note.activeSite.measureNumber)
                 offset.append(note.offset)
                 quarterLength.append(note.duration.quarterLength)
-                pitch.append(note.pitches[0])
+                pitch.append(note.pitch)
                 volume.append(note.volume.realized)
 
                 n = {'offset': note.offset,
                     'quarter_length': note.duration.quarterLength,
-                    'pitch': note.pitches[0],
+                    'pitch': note.pitch,
                     'volume': note.volume.realized}
 
                 if f'measure_{note.activeSite.measureNumber}' not in notes.keys():
@@ -171,17 +171,19 @@ class Score():
       return timestamps
 
     def get_note_id(self, note):
-        # If input is a music21 note or pitch object, return MIDI number
-        if hasattr(note, 'pitch'):
-            return note.pitch.midi
-        elif hasattr(note, 'midi'):
-            return note.midi
-        else:
-            # Try to parse string note like 'C#4'
-            from music21 import pitch
-            p = pitch.Pitch(note)
-            return p.midi
+      octave = int(re.sub(r"[^0-9]+", "", note))
+      acc = re.sub(r"[^#b]", "", note)
+      note = re.sub(r"[^a-zA-Z]+", "", note)
 
+      accidental = 0
+      dic = {'C': 1, 'D': 2, 'E': 3, 'F': 4, 'G': 5, 'A': 6, 'B': 7}
+
+      if acc == '#':
+        accidental += 0.5
+      if acc == 'b':
+        accidental -= 0.5
+
+      return (octave * 6) + (accidental) + dic[note]
 
     def get_intervals(self):
         notes = self.get_all_notes()['pitch']
@@ -256,6 +258,18 @@ def get_lyrics(csv_filename):
     return None
 
 def get_note_id(n):
+  
+    try:
+        # If it's a Pitch object
+        if isinstance(n, pitch.Pitch):
+            p = n
+        else:
+            p = pitch.Pitch(n)
+        return p.midi
+    except Exception as e:
+        print(f">> ⚠️ get_note_id error with input '{n}': {e}")
+        raise
+"""
   if type(n) is not str:
     n = n.nameWithOctave
 
@@ -269,7 +283,7 @@ def get_note_id(n):
     "F": 5, "F#": 6, "Gb": 6,
     "G": 7, "G#": 8, "Ab": 8,
     "A": 9, "A#": 10, "Bb": 10,
-    "B": 11
+    "B": 11, "B#": 0, "E#": 5
   }
 
   if not acc:
@@ -278,6 +292,8 @@ def get_note_id(n):
     acc = "b"
 
   return noteValues[note + acc] + (octave + 1) * 12
+
+"""
 
 def score_contour_info(score_all_notes, time_sig):
   contour = []
@@ -381,35 +397,29 @@ def get_nodes(notes):
   #print(nodes)
   return nodes
 
+import traceback 
 def get_links(notes):
+    links = []
+    midi_ids = [n.midi for n in notes]
 
-  links = []
-  all_notes = []
+    for i in range(len(midi_ids) - 1):
+        source = midi_ids[i]
+        target = midi_ids[i + 1]
 
-  for n in notes:
-      all_notes.append(n.nameWithOctave)
+        # Check if link already exists
+        found = False
+        for link in links:
+            if link['source'] == source and link['target'] == target:
+                link['count'] += 1
+                found = True
+                break
 
-  for i in range(len(all_notes) - 1):
-      source = all_notes[i]
-      target = all_notes[i + 1]
+        # If not found, add new link
+        if not found:
+            links.append({'source': source, 'target': target, 'count': 1})
 
-      for d in get_nodes(notes):
-          if d['name'] == source:
-              source = d['id']
-          if d['name'] == target:
-              target = d['id']
+    return links
 
-
-      found = False
-      for d in links:
-          if d['source'] == source and d['target'] == target:
-              d['count'] += 1
-              found = True
-              break
-
-      if not found:
-          links.append({'source': source, 'target': target, 'count': 1})
-  return links
 
 def get_note_frequency_by_measure(notes, info):
 
@@ -474,7 +484,7 @@ def get_music_intervals_info_and_save_to_folder(tune_collection):
 
 """ get_music_intervals_info_and_save_to_folder("./Traditional Irish Dance Tunes Composed by James Kelly (vol.1)") """
 
-collection = "Ryan’s Mammoth Collection"
+collection = "Old Irish Folk Music and Songs"
 all_tunes = Path(f'./{collection}')
 
 intervals_info_about_all_tunes = []
@@ -487,8 +497,10 @@ for tune in tqdm(all_tunes.iterdir()):
     notes = list(score.get_all_notes()['pitch'])
     info = {"name": tune_name, 'nodes': get_nodes(notes), 'links': get_links(notes)}
     intervals_info_about_all_tunes.append(info)
-  except:
-    print(">> an error occurred!!")
+  except Exception as e:
+    print(f">> an error occurred!!: {e}")
+    traceback.print_exc()
+    break
 
 
 print("wrinting...")
