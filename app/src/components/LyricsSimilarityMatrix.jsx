@@ -19,7 +19,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     // prevents expensive calculations on new renders
 
     const dimensions = useMemo(() => {
-        const svgWidth = width * 0.7;
+        const svgWidth = width;
         const svgHeight = svgWidth;
         const graphWidth = svgWidth * 0.7;
         const graphHeight = graphWidth;
@@ -86,6 +86,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         
+        
 
 
         const drawSimilarityMatrix = (data) => {
@@ -111,11 +112,11 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
             const zoomContainer = chart.append("g").attr("id", "zoom-container")
             const similarityMatrix = zoomContainer.append("g").attr("id", "similarity-matrix")
             
-            let size = graphWidth / ((numOfTokens - 1) * 2.5)
+            let size = d3.min([graphWidth * 0.025, graphWidth / ((numOfTokens - 1) * 2.5)])
             let padding = 1.5 * size
-            let axis = d3.scaleLinear().domain([0, numOfTokens - 1]).range([0, graphWidth])
-
-
+            let matrixSize = (numOfTokens - 1) * (size + padding)
+            let axis = d3.scaleLinear().domain([0, numOfTokens - 1]).range([0, matrixSize])
+            
             songTokens.forEach((token_i, i) => {
                 const row = similarityMatrix.append("g").attr("id", `row-${i}`)
                 let fillColor 
@@ -158,11 +159,11 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
                 
                 console.log("zoomContainer transform:", zoomContainer.attr("transform"));
         
-                const xAxis = chart.append("g").attr("id", "x-axis").attr("width", graphWidth)
-                const yAxis = chart.append("g").attr("id", "y-axis").attr("width", graphWidth)
+                const xAxis = chart.append("g").attr("id", "x-axis")/* .attr("width", graphWidth) */
+                const yAxis = chart.append("g").attr("id", "y-axis")/* .attr("width", graphWidth) */
 
                 let ratio = 12
-                const zoom = lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio)
+                const zoom = lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio, matrixSize)
 
                 const initialTransform = d3.zoomIdentity.translate(
                     (svgWidth - graphWidth) / 2,

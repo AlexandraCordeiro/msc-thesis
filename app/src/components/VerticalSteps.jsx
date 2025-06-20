@@ -28,12 +28,15 @@ export default function VerticalSteps({steps, activeStep, setActiveStep}) {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
-      width: '20vw',
+      width: 'fit-content',
       height: '100%',
       position: 'sticky',
       top: 0,
       zIndex: 1000,
-      margin: 0
+      margin: 0,
+      paddingTop: '3rem',
+      paddingBottom: '3rem'
+
       }}>
 
         <IconButton type='button' disabled={activeStep === 0} onClick={handleBack} sx={{borderRadius: '50%', marginLeft: `-${(40-24) * 0.5}px`}}>
@@ -44,7 +47,7 @@ export default function VerticalSteps({steps, activeStep, setActiveStep}) {
             <Step
               sx={{
                 '& .MuiStepIcon-root': {
-                    color: '#c0c0c0',
+                    color: 'whitesmoke',
                 },
                 '& .MuiStepIcon-root:hover': {
                     cursor: 'pointer'

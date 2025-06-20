@@ -1,71 +1,46 @@
+/* custom components */
+
 import CollectionOfTunesRangeChart from './CollectionOfTunesRangeChart.jsx'
 import ArcDiagramChart from './ArcDiagramChart.jsx'
-import ScrollableTabsButtonVisible from './ScrollableTabsButtonVisible.jsx'
 import SpectogramChart from './SpectogramChart.jsx'
 import LyricsSimilarityMatrix from './LyricsSimilarityMatrix.jsx'
-import React from 'react'
-import MusicPlayer from './MusicPlayer.jsx'
-import csv from '../assets/lyrics_data.csv'
-import HorizontalLinearStepper from './HorizontalLinearStepper.jsx'
-import SelectAutoWidth from './SelectAutoWidth.jsx'
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { fontSize } from '../functions.js'
-import InfoIcon from '@mui/icons-material/Info';
-import HowToReadPopup from './HowToReadPopup.jsx'
+import VerticalSteps from './VerticalSteps.jsx'
+import DropdownMenu from './DropdownMenu.jsx'
+import { useWindowSize } from './UseWindowSize.jsx'
 
-import { styled } from '@mui/material/styles'
+/* other components */
+import { useEffect } from 'react'
+import Typography from '@mui/material/Typography'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import VerticalSteps from './VerticalSteps.jsx'
-import { Icon, IconButton } from '@mui/material'
-import ShowLyrics from './ShowLyrics.jsx'
-import DropdownMenu from './DropdownMenu.jsx'
+import { IconButton } from '@mui/material'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
+import csv from '../assets/lyrics_data.csv'
+
+/* import svgs */
 import ScoreContour from '../assets/score-contour-label.svg';
-import AscendingDescending from '../assets/ascending-descending-label.svg';
 import AudioContour from '../assets/audio-contour-label.svg';
-import ArcLabel from '../assets/arc-label.svg'
 import Matrix from '../assets/matrix.svg'
 import GoodmanVol1 from '../assets/Goodman Volume 1.svg'
 import GoodmanVol2 from '../assets/Goodman Volume 2.svg'
-
 import OldIrishFolkMusicSongs from '../assets/Old Irish Folk Music and Songs.svg'
 import FolkSongbook from '../assets/Folk Songbook.svg'
 import ArchivoDublin from '../assets/Archivo Dublin.svg'
 import CollectionOfCountryDances from '../assets/Collection of Country Dances.svg'
-
 import ChildrenSongs from '../assets/Children’s songs, rhymes and riddles collected by Hugh Shields.svg'
 import EdwardCollection from '../assets/Edward Bunting’s Collection.svg'
-
 import JigsAndReels from '../assets/Jigs and Reels.svg'
 import RyanCollectionPart2 from '../assets/Ryan’s Mammoth Collection Part 2.svg'
 import RyanCollectionPart1 from '../assets/Ryan’s Mammoth Collection Part 1.svg'
-
 import TraditionalIrishDanceTunes from '../assets/Traditional Irish Dance Tunes Composed by James Kelly (vol.1).svg'
 import TommyPeoples from '../assets/Tommy Peoples.svg'
 import SelectionManuscripts from '../assets/Selection of Manuscripts by Pádraig O\'Keeffe.svg'
 import GemsIrishMelody from '../assets/Gems of Irish Melody.svg'
-
 import DanceMusic from '../assets/Dance Music of Ireland.svg'
-
-
-
-
-
-
-
-import { useWindowSize } from './UseWindowSize.jsx'
-import { useEffect } from 'react'
-import { justifyContent } from '@mui/system'
-
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const title = "Visualization of Folk Music"
 const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -78,8 +53,6 @@ const creators = csv.map(d => d.creatorP)
 const steps = ['Lyrics', 'Performance', 'Score', 'Collection'];
 const lyrics = csv.map(d => d.lyrics)
   
-  
-// ArcDiagramChart, CollectionOfTunesRangeChart, LyricsSimilarityMatrix, SpectogramChart]
 
 const dividerStyle = {
   borderBottomWidth: '0.35rem',
@@ -87,6 +60,7 @@ const dividerStyle = {
 }
 
 export default function GridLayout() {
+
   const [width, height] = useWindowSize()
   const [tune, setTune] = React.useState(titles[0])
   const [tuneName, setTuneName] = React.useState("Hover chart to find out more");
@@ -185,14 +159,6 @@ export default function GridLayout() {
                 </Grid>
 
             </Grid>
-
-
-
-
-          
-
-            
-
           </>
         )
       
@@ -488,9 +454,6 @@ export default function GridLayout() {
               </Grid>
 
           </Grid>
-
-            
-
           </>
           )
       default:
@@ -513,6 +476,7 @@ export default function GridLayout() {
               </Typography>
             </Grid>
 
+
             <Grid size={{xs: 10, sm: 8, md: 6, xl: 5}} paddingTop={{xs: '1rem', md: '7rem'}}>
               <Typography variant='body' fontFamily={'montserrat'} color={'black'} fontWeight={500}>
                 Recently, the recovery and transmission of folk music has achieved the interest of the authorities as a way of preserving this intangible asset, a problem accelerated by the depopulation of rural areas, the loss of the function of this music, and the paradigmatic change of the forms of musical transmission.
@@ -521,28 +485,25 @@ export default function GridLayout() {
 
             <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}/>
 
-            <Grid size={{xs: 10, sm: 8, md: 6, xl: 5}}>
-              <Typography variant='body' fontFamily={'montserrat'} color={'black'} fontWeight={500}>
-                Recently, the recovery and transmission of folk music has achieved the interest of the authorities as a way of preserving this intangible asset, a problem accelerated by the depopulation of rural areas, the loss of the function of this music, and the paradigmatic change of the forms of musical transmission.
-              </Typography>
-            </Grid>
-
-
             <Grid size={12}>
               <Divider sx={dividerStyle}></Divider>
             </Grid>
 
+
+            {/* selected visualization */}
             <Grid size={12}>
               {selectViz(activeStep)}
             </Grid>         
         </Grid>
       </Box>
       
+
+      {/* side bar menu */}
       <Box
         sx={{
         position: 'absolute',
-        left: '2.5%',
-        top: `${window.innerHeight}`,
+        left: `calc(5% - 16px)`,
+        top: `${window.innerHeight}px`,
         }}
         >
         <VerticalSteps steps={steps} activeStep={activeStep} setActiveStep={setActiveStep} />

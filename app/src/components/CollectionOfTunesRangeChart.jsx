@@ -169,7 +169,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                     group.selectAll('.links').attr("opacity", 1);
                     group.selectAll('.donut').attr("fill", "lightgray").attr("opacity", 0);
                     group.selectAll('.symbol').attr("fill", "none")
-                    setTuneName("Hover chart")
+                    setTuneName("Hover chart to find more")
                 }
             });
 

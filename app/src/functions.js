@@ -155,32 +155,6 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     return links
 }
 
-/* export function drawNoteFrequencyRings(data, group, graphWidth, x, colorGradient) {
-    group
-    .append('g')
-    .attr('id', 'rings')
-    .selectAll('g')
-    .data(data.nodes.filter(d => d.frequency > 0))
-    .enter()
-        .append('g')
-        .attr('id', d => 'ring-'+ d.name)
-        .selectAll('circle')
-        .data(d => {
-            let map = new Map()
-            for (let i = 0; i < d.frequency; i++) {
-                map.set(i, d.id)
-            }
-            return map;
-        })
-        .enter()
-            .append('circle')
-            .attr('cx', d => x(d[1]))
-            .attr('cy', -graphWidth * 0.1)
-            .attr('r', d => 4 * (d[0] + 1)) 
-            .style('stroke', (d, i) => colorGradient(i))
-            .attr("stroke-width", "0.08rem")
-            .style('fill', 'none')
-} */
 
 export function drawNoteFrequencyRings(data, group, graphWidth, x) {
     const radius = d3.scaleLinear()
@@ -362,7 +336,7 @@ export function drawXAxis(data, group, graphHeight, x, extent) {
     return noteNamesAxis
 }
 
-export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio)  {
+export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio, matrixSize)  {
     let lastK = -1
     
     // console.log(ratio)
@@ -376,7 +350,7 @@ export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContaine
         // update coordinates
         let axisInnerPadding = - 1.5 * size * event.transform.k
         const approxLabelWidth = 20;
-        const maxTicks = Math.floor(graphWidth / approxLabelWidth);
+        const maxTicks = Math.floor(matrixSize / approxLabelWidth);
         const tickStep = Math.ceil(numOfTokens / (maxTicks * event.transform.k));
         const effectiveTickStep = Math.max(tickStep, 1);
 
@@ -399,7 +373,7 @@ export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContaine
             if (currentDomain[0] < 0) {
                 newScale = d3.scaleLinear()
                 .domain([0, numOfTokens - 1])
-                .range([0, graphWidth * event.transform.k])
+                .range([0, matrixSize * event.transform.k])
             }
 
             // display x axis (semantic zoom)
