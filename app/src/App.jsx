@@ -3,7 +3,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import GridLayout from './components/GridLayout.jsx'
-import DashboardLayoutBasic from './components/DashboardLayoutBasic.jsx'
 
 function useWindowSize() {
   const [size, setSize] = useState([0, 0]);

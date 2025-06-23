@@ -321,7 +321,7 @@ const SpectogramChart = ({tune, gridId}) => {
                 .attr("cx", d => yScore(midiToHz(noteToMidi(d.note))) * Math.cos(xScore(+d.time)))
                 .attr("cy", d => yScore(midiToHz(noteToMidi(d.note))) * Math.sin(xScore(+d.time)))
                 .attr("fill", "#390160")
-                .attr("r", 3)
+                .attr("r", 3.5)
                 .attr("id", "tooltip-score-contour")
                 .on("mouseover", (e, d) => mouseOver(d.note, d.time, d3.select(e.target)))
                 .on("mouseout", e => mouseOut(d3.select(e.target)))

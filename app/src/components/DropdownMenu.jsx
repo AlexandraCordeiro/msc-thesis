@@ -173,7 +173,7 @@ const MenuItem = styled(BaseMenuItem)(
 const MenuButton = styled(BaseMenuButton)(
   ({ theme }) => `
   font-family: 'montserrat', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.5;
   padding: 8px 16px;

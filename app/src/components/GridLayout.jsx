@@ -7,7 +7,7 @@ import LyricsSimilarityMatrix from './LyricsSimilarityMatrix.jsx'
 import VerticalSteps from './VerticalSteps.jsx'
 import DropdownMenu from './DropdownMenu.jsx'
 import { useWindowSize } from './UseWindowSize.jsx'
-
+import HorizontalNonLinearStepper from './HorizontalNonLinearStepper.jsx'
 /* other components */
 import { useEffect } from 'react'
 import Typography from '@mui/material/Typography'
@@ -19,7 +19,7 @@ import { IconButton } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-import csv from '../assets/lyrics_data.csv'
+import csv from '../assets/data.csv'
 
 /* import svgs */
 import ScoreContour from '../assets/score-contour-label.svg';
@@ -41,6 +41,7 @@ import TommyPeoples from '../assets/Tommy Peoples.svg'
 import SelectionManuscripts from '../assets/Selection of Manuscripts by Pádraig O\'Keeffe.svg'
 import GemsIrishMelody from '../assets/Gems of Irish Melody.svg'
 import DanceMusic from '../assets/Dance Music of Ireland.svg'
+import RhymeGraph from './RhymeGraph.jsx'
 
 const title = "Visualization of Folk Music"
 const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -50,14 +51,15 @@ const titles = csv.map(d => d.title)
 const filenames = csv.map(d => d.identifier)
 const collections = ["Goodman Volume 1", "Goodman Volume 2", "Edward Bunting’s Collection", "Children’s songs, rhymes and riddles collected by Hugh Shields", "Selection of Manuscripts by Pádraig O'Keeffe", "Tommy Peoples", "Archivo Dublin", "Folk Songbook", "Collection of Country Dances", "Dance Music of Ireland", "Gems of Irish Melody", "Traditional Irish Dance Tunes Composed by James Kelly (vol.1)", "Jigs and Reels", "Ryan’s Mammoth Collection Part 1", "Ryan’s Mammoth Collection Part 2", "Old Irish Folk Music and Songs"]
 const creators = csv.map(d => d.creatorP)
-const steps = ['Lyrics', 'Performance', 'Score', 'Collection'];
+const steps = ['Lyrics', 'Rhyme', 'Performance', 'Score', 'Collection'];
 const lyrics = csv.map(d => d.lyrics)
-  
+
 
 const dividerStyle = {
   borderBottomWidth: '0.35rem',
   borderImage: 'linear-gradient(90deg, #b589fc , #a0cafa) 1',
 }
+
 
 export default function GridLayout() {
 
@@ -109,7 +111,10 @@ export default function GridLayout() {
               </Grid>
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
-                <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  </div>
               </Grid>
             
               <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
@@ -119,8 +124,23 @@ export default function GridLayout() {
 
                 <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                   {buttonClick ? (
-                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', maxWidth: '200px'}}>
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px', width: '200px', maxHeight: '400px', overflow: 'auto'}}>
                     
+                    <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding='1rem' >Lyrics</Typography>
+                    
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem' whiteSpace='pre-line'>{lyrics[filenames.indexOf(filename)]}</Typography>
+
+                    <div style={{alignSelf: 'center', padding:'1rem'}}>
+                      <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Go back</Typography>
+                      <IconButton onClick={handleButton}>
+                        <KeyboardArrowLeftIcon/>
+                      </IconButton>
+                    </div>
+                  </div>
+
+                  ) : 
+                  (
+                  <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '200px'}}>
                     <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding={'1rem'}>How to Read</Typography>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Matrix</Typography>
                     
@@ -139,10 +159,43 @@ export default function GridLayout() {
                       </IconButton>
                     </div>
                   </div>
+                  )}
+                </Grid>
 
-                  ) : 
-                  (
-                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px', maxWidth: '200px', maxHeight: '400px', overflow: 'auto'}}>
+            </Grid>
+          </>
+        )
+      
+      case 1:
+        return (
+          <>
+            <Grid container>
+              <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} id='section-title'>
+                <Typography variant='h4' fontFamily={'playfair display'} color='black'>Rhyme</Typography>
+              </Grid>
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
+              
+              <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
+                <Typography variant='body' color='black' fontFamily={'montserrat'}>
+                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                </Typography>
+              </Grid>
+
+              <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  </div>
+              </Grid>
+            
+              <Grid sx={{height: 'fit-content', paddingTop: '3rem'}} size={9} id='grid-size'>
+                <RhymeGraph tuneIndex={filenames.indexOf(filename)} gridId={'grid-size'}/>
+              </Grid>
+
+
+                <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center" paddingTop= '3rem'>
+                  {buttonClick ? (
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px', width: '200px', maxHeight: '400px', overflow: 'auto'}}>
                     
                     <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding='1rem' >Lyrics</Typography>
                     
@@ -155,15 +208,36 @@ export default function GridLayout() {
                       </IconButton>
                     </div>
                   </div>
+
+                  ) : 
+                  (
+                  <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '200px'}}>
+                    <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding={'1rem'}>How to Read</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Matrix</Typography>
+                    
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem'>
+                    Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j
+                    </Typography>
+
+                    <div style={{alignSelf: 'center'}}>
+                        <img src={Matrix} style={{paddingBottom:'1rem'}}></img>
+                    </div>
+
+                    <div style={{alignSelf: 'center', padding:'1rem'}}>
+                      <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Show lyrics</Typography>
+                      <IconButton onClick={handleButton}>
+                        <KeyboardArrowRightIcon/>
+                      </IconButton>
+                    </div>
+                  </div>
                   )}
                 </Grid>
 
             </Grid>
           </>
         )
-      
       /* Spectogram */
-      case 1: 
+      case 2: 
         return (
             <>
               <Grid container>
@@ -178,21 +252,24 @@ export default function GridLayout() {
                   </Typography>
                 </Grid>
                 <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
-                  <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  </div>
                 </Grid>
               
               
 
-              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+              <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
                 <SpectogramChart key={filename} tune={filename} gridId={'grid-size'}/>
               </Grid>
 
 
-              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="center">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
+              <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '10px', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '180px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Loudness</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'}>Loudness</Typography>
                   <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #e0f4fd, #390160)', borderRadius: '0.25rem'}}/>
                   <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>min</Typography>
@@ -200,11 +277,11 @@ export default function GridLayout() {
                   </div>
 
                   <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Score Contour</Typography>
-                  <div>
+                  <div style={{display: 'flex', justifyContent: 'center', paddingTop: '1rem'}}>
                     <img src={ScoreContour} style={{paddingBottom:'1rem'}}></img>
                   </div>
                   <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Audio Contour</Typography>
-                  <div>
+                  <div style={{display: 'flex', justifyContent: 'center', paddingTop: '1rem'}}>
                     <img src={AudioContour}></img>
                   </div>
                 </div>
@@ -216,7 +293,7 @@ export default function GridLayout() {
           )
 
       /* Arc Diagram */
-      case 2:
+      case 3:
         return (
           <>
             <Grid container>
@@ -231,15 +308,18 @@ export default function GridLayout() {
                 </Typography>
               </Grid>
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
-                <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
-                </Grid>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  </div>
+              </Grid>
 
-                <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+                <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
                   <ArcDiagramChart tune={filename} gridId={'grid-size'}/>
                 </Grid>
 
-                <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
+                <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '10px', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '180px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
 
@@ -285,7 +365,7 @@ export default function GridLayout() {
         )
         
         /* Collection of Tunes */
-        case 3:
+        case 4:
           return (
             <>
             <Grid container>
@@ -308,12 +388,12 @@ export default function GridLayout() {
                 <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='p'>{tuneName}</Typography>
               </Grid>
 
-              <Grid sx={{height: 'fit-content'}} size={10} id='grid-size'>
+              <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
                 <CollectionOfTunesRangeChart  interaction={true} collection={collection} setTuneName={setTuneName} gridId='grid-size'/>
               </Grid>
 
-              <Grid size={2} display='flex' flexDirection='column' alignItems='center' justifyContent="flex-start">
-                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '1rem', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
+              <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '10px', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '180px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
 
@@ -335,120 +415,123 @@ export default function GridLayout() {
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center' id='small-multiples'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[0]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={GoodmanVol1} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[1]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={GoodmanVol2} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[2]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={EdwardCollection} width={'100%'}></img>
                 </div>
               </Grid>
 
-              <Grid size={12} padding={'1rem'}/>
+              <Grid size={12} padding={'2rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[3]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={ChildrenSongs} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[4]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={SelectionManuscripts} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[5]}`}</Typography>
-                <div>
-                  <img src={TommyPeoples} width={'100%'}></img>
+                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[11]}`}</Typography>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
+                  <img src={TraditionalIrishDanceTunes} width={'100%'}></img>
                 </div>
               </Grid>
 
-              <Grid size={12} padding={'1rem'}/>
+              <Grid size={12} padding={'2rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[6]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={ArchivoDublin} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[7]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={FolkSongbook} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[8]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={CollectionOfCountryDances} width={'100%'}></img>
                 </div>
               </Grid>
 
-              <Grid size={12} padding={'1rem'}/>
+              <Grid size={12} padding={'2rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[9]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={DanceMusic} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[10]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={GemsIrishMelody} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[11]}`}</Typography>
-                <div>
-                  <img src={TraditionalIrishDanceTunes} width={'100%'}></img>
+                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[5]}`}</Typography>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
+                  <img src={TommyPeoples} width={'100%'}></img>
                 </div>
               </Grid>
+              
 
-              <Grid size={12} padding={'1rem'}/>
+              <Grid size={12} padding={'2rem'}/>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[12]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={JigsAndReels} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[13]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={RyanCollectionPart1} width={'100%'}></img>
                 </div>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[14]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={RyanCollectionPart2} width={'100%'}></img>
                 </div>
               </Grid>
 
+              <Grid size={12} padding={'2rem'}/>
+
               <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
                 <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[15]}`}</Typography>
-                <div>
+                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
                   <img src={OldIrishFolkMusicSongs} width={'100%'}></img>
                 </div>
               </Grid>
@@ -488,7 +571,10 @@ export default function GridLayout() {
             <Grid size={12}>
               <Divider sx={dividerStyle}></Divider>
             </Grid>
-
+            
+            <Grid size={12}>
+              <HorizontalNonLinearStepper steps={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>
+            </Grid>
 
             {/* selected visualization */}
             <Grid size={12}>
@@ -496,19 +582,6 @@ export default function GridLayout() {
             </Grid>         
         </Grid>
       </Box>
-      
-
-      {/* side bar menu */}
-      <Box
-        sx={{
-        position: 'absolute',
-        left: `calc(5% - 16px)`,
-        top: `${window.innerHeight}px`,
-        }}
-        >
-        <VerticalSteps steps={steps} activeStep={activeStep} setActiveStep={setActiveStep} />
-      </Box>
-
     </Box>
     
   )

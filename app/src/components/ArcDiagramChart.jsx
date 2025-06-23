@@ -268,14 +268,13 @@ const ArcDiagramChart = ({tune, gridId}) => {
 
     const svgRef = useRef(null)
     const [width, height] = useWindowSize(gridId);
-    console.log([width, height])
     const filename = `/music_intervals/${tune}_music_intervals.json`
     
     useLayoutEffect(() => {
         
 
         // set the dimensions and margins of the graph
-        const svgWidth = width,
+        const svgWidth = width * 0.9,
         svgHeight = width,
         graphWidth = svgWidth * 0.9,
         graphHeight = svgHeight

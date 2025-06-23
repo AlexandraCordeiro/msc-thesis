@@ -252,6 +252,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .append("text")
         .attr('class', 'sparkline-labels')
         .text("Measure")
+        .attr('style', 'font-family: montserrat')
         .attr("text-anchor", "middle")
         .attr("x", sparklineSize / 2)
         .attr("y", xOffset)
@@ -265,6 +266,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .text("Count")
         .attr("x", 0)
         .attr("y", 0)
+        .attr('style', 'font-family: montserrat')
         .attr("text-anchor", "middle")
         .attr("transform", `translate(${-yOffset}, ${-sparklineSize / 2}) rotate(-90) `)
 
@@ -274,6 +276,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .attr("id", "sparkline-title")
         .append("text")
         .text("Note Distribution")
+        .attr('style', 'font-family: montserrat')
         .attr("x", 0)
         .attr("y", 0)
         .attr('class', 'sparkline-labels')
@@ -286,6 +289,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         .attr("id", "sparkline-note")
         .append("text")
         .text(midiToNote(id))
+        .attr('style', 'font-family: montserrat')
         .attr('class', 'sparkline-labels')
         .attr("x", 0)
         .attr("y", 0)
@@ -342,7 +346,7 @@ export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContaine
     // console.log(ratio)
     return d3.zoom()
     .scaleExtent([1, ratio])
-    .translateExtent([[0, 0], [graphWidth, graphWidth]])
+    .translateExtent([[0, 0], [matrixSize, matrixSize]])
 
     .on("zoom", (event) => {
         
