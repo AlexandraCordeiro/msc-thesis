@@ -21,7 +21,7 @@ function calcInnerAndOutterRadius(data) {
 }
 
 
-const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interaction}) => {
+const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interaction, titles}) => {
 
     // remove unwanted tooltips
     removeElement("tooltip-lyrics")
@@ -126,12 +126,12 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                 const links = drawLinks(d, thisGroup, p, graphWidth, x, extent)
 
 
-                let symbolSize = graphWidth * 0.2
+               /*  let symbolSize = graphWidth * 0.2
                 thisGroup.append("path")
                 .attr("d", d3.symbol(d3.symbolCircle).size(symbolSize))
                 .attr("fill", "none")
                 .attr("class", "symbol")
-                .attr("transform", `translate(${graphWidth + 10}, 0)`)
+                .attr("transform", `translate(${graphWidth + 10}, 0)`) */
 
         
             })
@@ -152,7 +152,9 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                     hovered.select('.donut').attr("opacity", 0);
                     hovered.select('.symbol').attr("fill", "#7303c0")
                     hovered.select('.donut').attr("box-shadow", "rgba(0, 0, 0, 0.24) 0px 3px 8px")
-                    setTuneName(hovered.attr("id"))
+                    console.log(parseInt(hovered.attr("id").split("-").slice(-1)) - 1)
+                    console.log(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
+                    setTuneName(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
                 }
 
             })
@@ -169,7 +171,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                     group.selectAll('.links').attr("opacity", 1);
                     group.selectAll('.donut').attr("fill", "lightgray").attr("opacity", 0);
                     group.selectAll('.symbol').attr("fill", "none")
-                    setTuneName("Hover chart to find more")
+                    setTuneName("Hover the chart to find more")
                 }
             });
 

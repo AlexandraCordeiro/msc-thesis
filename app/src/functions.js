@@ -197,7 +197,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
     if (note) {
         const sparklineSize = graphWidth * 0.1
         const measures = data.note_frequency_by_measure.flatMap(d => d.measures.map(m => m.measure))
-    
+        const yDomain = [0, d3.max(data.note_frequency_by_measure.flatMap(d => d.measures.map(m => m.counter)))]
     
         const xHistogram = d3.scaleLinear()
         .range([0, sparklineSize])
@@ -205,7 +205,7 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
     
         const yHistogram = d3.scaleLinear()
         .range([0, -sparklineSize])
-        .domain([0, d3.max(data.note_frequency_by_measure.flatMap(d => d.measures.map(m => m.counter)))])
+        .domain(yDomain)
     
         const sparklines = group.append('g')
         .attr('id', 'sparklines')
@@ -223,11 +223,9 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
         
         const histogram = sparklines.append('g').attr("id", "histogram")
 
-        const range = d3.range(d3.min(measures), d3.max(measures) + 1)
-        let numTicks = range.length
-
-
-        if (numTicks >= 6) numTicks = 5;
+        const rangeX = d3.range(d3.min(measures), d3.max(measures) + 1, d3.max(measures) >= 6 ? 2: 1)
+        const rangeY = d3.range(d3.min(yDomain), d3.max(yDomain) + 1, d3.max(measures) >= 6 ? 2: 1)
+        
 
         histogram.append("path")
         .datum(note.measures)
@@ -236,13 +234,13 @@ export function drawSparklines(data, group, graphHeight, graphWidth, x, id) {
     
         histogram.append("g")
         .attr("id", "histogram-x-axis")
-        .call(d3.axisBottom(xHistogram).ticks(numTicks).tickFormat(d3.format("d")))
+        .call(d3.axisBottom(xHistogram).tickValues(rangeX).tickFormat(d3.format("d")))
         .attr('style', 'font-family: montserrat')
 
         
         histogram.append("g")
         .attr("id", "histogram-y-axis")
-        .call(d3.axisLeft(yHistogram).ticks(numTicks).tickFormat(d3.format("d")))
+        .call(d3.axisLeft(yHistogram).tickValues(rangeY).tickFormat(d3.format("d")))
         .attr('style', 'font-family: montserrat')
 
 

@@ -15,7 +15,7 @@ class Score():
     def __init__(self, file):
         self.file = file
         self.score = self.load_score()
-        self.key = self.get_key()
+        """ self.key = self.get_key() """
         self.meter = None
         self.instruments = self.get_instruments()
         self.tempo = None
@@ -52,8 +52,8 @@ class Score():
                 instruments.append(inst)
         return instruments
 
-    def get_key(self):
-        return self.score.analyze('key')
+    """ def get_key(self):
+        return self.score.analyze('key') """
 
     """ def get_chord_progression(self):
         chords = self.score.chordify().recurse().getElementsByClass(chord.Chord)
@@ -484,7 +484,7 @@ def get_music_intervals_info_and_save_to_folder(tune_collection):
 
 """ get_music_intervals_info_and_save_to_folder("./Traditional Irish Dance Tunes Composed by James Kelly (vol.1)") """
 
-collection = "Old Irish Folk Music and Songs"
+collection = "Dance music of Ireland"
 all_tunes = Path(f'./{collection}')
 
 intervals_info_about_all_tunes = []

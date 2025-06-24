@@ -39,4 +39,4 @@ def rename_xml_files_by_title_with_spaces(folder_path):
             print(f"[x] Failed to process {file.name}: {e}")
 
 # Example usage:
-rename_xml_files_by_title_with_spaces("./Old Irish Folk Music and Songs")
+rename_xml_files_by_title_with_spaces("goodman_vol_1_xml")

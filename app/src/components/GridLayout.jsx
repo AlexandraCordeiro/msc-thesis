@@ -28,10 +28,10 @@ import Matrix from '../assets/matrix.svg'
 import GoodmanVol1 from '../assets/Goodman Volume 1.svg'
 import GoodmanVol2 from '../assets/Goodman Volume 2.svg'
 import OldIrishFolkMusicSongs from '../assets/Old Irish Folk Music and Songs.svg'
-import FolkSongbook from '../assets/Folk Songbook.svg'
+/* import FolkSongbook from '../assets/Folk Songbook.svg'
 import ArchivoDublin from '../assets/Archivo Dublin.svg'
 import CollectionOfCountryDances from '../assets/Collection of Country Dances.svg'
-import ChildrenSongs from '../assets/Children’s songs, rhymes and riddles collected by Hugh Shields.svg'
+import ChildrenSongs from '../assets/Children’s songs, rhymes and riddles collected by Hugh Shields.svg' */
 import EdwardCollection from '../assets/Edward Bunting’s Collection.svg'
 import JigsAndReels from '../assets/Jigs and Reels.svg'
 import RyanCollectionPart2 from '../assets/Ryan’s Mammoth Collection Part 2.svg'
@@ -49,23 +49,72 @@ const howToRead = "How to read this visualization"
 
 const titles = csv.map(d => d.title)
 const filenames = csv.map(d => d.identifier)
-const collections = ["Goodman Volume 1", "Goodman Volume 2", "Edward Bunting’s Collection", "Children’s songs, rhymes and riddles collected by Hugh Shields", "Selection of Manuscripts by Pádraig O'Keeffe", "Tommy Peoples", "Archivo Dublin", "Folk Songbook", "Collection of Country Dances", "Dance Music of Ireland", "Gems of Irish Melody", "Traditional Irish Dance Tunes Composed by James Kelly (vol.1)", "Jigs and Reels", "Ryan’s Mammoth Collection Part 1", "Ryan’s Mammoth Collection Part 2", "Old Irish Folk Music and Songs"]
+const collections = ["Goodman Volume 1", "Goodman Volume 2", "Edward Bunting’s Collection", "Children’s songs, rhymes and riddles collected by Hugh Shields", "Selection of Manuscripts by Pádraig O'Keeffe", "Tommy Peoples", "Dance Music of Ireland", "Gems of Irish Melody", "Traditional Irish Dance Tunes Composed by James Kelly (vol.1)", "Jigs and Reels", "Ryan’s Mammoth Collection Part 1", "Ryan’s Mammoth Collection Part 2", "Old Irish Folk Music and Songs"]
 const creators = csv.map(d => d.creatorP)
 const steps = ['Lyrics', 'Rhyme', 'Performance', 'Score', 'Collection'];
 const lyrics = csv.map(d => d.lyrics)
 
+let collectionsData = [
+  {title: "Tunes of the Munster Pipers Volume 1",
+  p: "This two-volume book presents the manuscript collection of Irish music written by Canon James Goodman in the 1860s and preserved in the Library of Trinity College.",
+  link: "https://www.itma.ie/shop/tunes-of-the-munster-pipers-vols-1-2/",
+  img: GoodmanVol1}, 
+  {title: "Tunes of the Munster Pipers Volume 2",
+  p: "This two-volume book presents the manuscript collection of Irish music written by Canon James Goodman in the 1860s and preserved in the Library of Trinity College.",
+  link: "https://www.itma.ie/shop/tunes-of-the-munster-pipers-vols-1-2/",
+  img: GoodmanVol2}, 
+  {title: "Edward Bunting’s First Published Collection of Irish Music, 1797",
+  p: "A General Collection of the Ancient Irish Music, Containing a Variety of Admired Airs Never Before Published, and also the Compositions of Conolan and Carolan; Collected from the Harpers &c. in the Different Provinces of Ireland, and Adapted for the Piano-Forte",
+  link: 'https://www.itma.ie/texts/bunting_1/',
+  img: EdwardCollection},
+  {title: "Palandri / O’Keeffe Selection for World Fiddle Day 2021",
+  p: "To mark World Fiddle Day 2021 ITMA invited fiddle player Andrea Palandri to select his favourite tunes from the Caoimhín Mac Aoidh Pádraig O’Keeffe collection and other Pádraig O’Keeffe manuscripts in the ITMA collection.",
+  link: "https://www.itma.ie/notated-collections/andrea-palandri/",
+  img: SelectionManuscripts}, 
+  {title: "Tommy Peoples: A Portrait of an Artist",
+  p: "Tommy Peoples is amongst the most important and influential musicians of his time. This project is a snapshot of his musical life. Born in St Johnston in 1948, he spent parts of his life in Dublin, Co. Clare and Boston, returning to his childhood home in 2004. Tommy’s unique fiddle style and significant compositional output mark him as one of the most important figures in the history of Irish Traditional Music. He died in August 2018.\nAs part of the Tommy Peoples: A Portrait of an Artist project Tommy’s daughter, Siobhán Peoples, provided meticulous transcriptions of her father’s playing.",
+  link: "https://www.itma.ie/notated-collections/transcriptions-from-the-playing-of-tommy-peoples/",
+  img: TommyPeoples}, 
+  {title: "Dance Music Of Ireland",
+  p: "A selection of traditional dance music.",
+  link: "",
+  img: DanceMusic}, 
+  {title: "Gems of Irish melody: a choice collection of folk music including jigs, reels, hornpipes, country dances, songs etc.",
+  p: "The Scottish musicologist Alfred Edward Moffat (Edinburgh 1866 – London 1950) was a highly regarded scholar and editor of music, with a specialisation in early British composers for the violin.\n Alfred Moffat edited in the early 1900s various other undated Irish collections, such as his Gems of Irish Melody and Irish National Songs, and items of Irish sheet music.",
+  link: "https://www.itma.ie/texts/moffat/",
+  img: GemsIrishMelody}, 
+  {title: "Traditional Irish dance tunes composed by James Kelly",
+  p: "Reels, jigs, hornpipes, polkas, slides, barndances, strathspeys.",
+  link: "https://itmacatalogues.ie/Portal/Default/en-GB/RecordView/Index/254781",
+  img: TraditionalIrishDanceTunes}, 
+  {title: "Jigs and Reels",
+  p: "A compilation of various traditional irish jigs and reels.",
+  link: "",
+  img: JigsAndReels}, 
+  {title: "Ryan’s Mammoth Collection Part. 1",
+  p: "Ryan’s Mammoth Collection, published in Boston in 1883, was – and is – an important collection of traditional music, though comparatively little known among Irish traditional players today.\nRyan’s collection contains more than a thousand tunes and is known to have been a source of repertory for many prominent Irish players, including such notable players of complicated hornpipes as the fiddle players James Morrison and Seán Maguire.",
+  link: "https://www.itma.ie/notated-collections/ryans-mammoth-collection-a/",
+  img: RyanCollectionPart1}, 
+  {title: "Ryan’s Mammoth Collection Part. 2",
+  p: "Ryan’s Mammoth Collection, published in Boston in 1883, was – and is – an important collection of traditional music, though comparatively little known among Irish traditional players today.\nRyan’s collection contains more than a thousand tunes and is known to have been a source of repertory for many prominent Irish players, including such notable players of complicated hornpipes as the fiddle players James Morrison and Seán Maguire.",
+  link: "https://www.itma.ie/notated-collections/ryans-mammoth-collection-a/",
+  img: RyanCollectionPart2}, 
+  {title: "Old Irish Folk Music & Songs",
+  p: "Old Irish Folk Music and Songs is Joyce’s magnum opus in Irish music. It includes the melodies of songs (some with words in English) and a variety of dance tunes. About half come from Joyce’s musical memories of his childhood in rural Co Limerick during the years before the Great Famine.",
+  link: "https://www.itma.ie/notated-collections/old-irish-folk-music-songs-a/",
+  img: OldIrishFolkMusicSongs}
+]
 
 const dividerStyle = {
   borderBottomWidth: '0.35rem',
   borderImage: 'linear-gradient(90deg, #b589fc , #a0cafa) 1',
 }
 
-
 export default function GridLayout() {
 
   const [width, height] = useWindowSize()
   const [tune, setTune] = React.useState(titles[0])
-  const [tuneName, setTuneName] = React.useState("Hover chart to find out more");
+  const [tuneName, setTuneName] = React.useState("Hover the chart to find out more");
   const [collection, setCollection] = React.useState(collections[3])
   const [filename, setFilename] = React.useState(filenames[0])
   const [creator, setCreator] = React.useState(creators[0])
@@ -298,7 +347,7 @@ export default function GridLayout() {
           <>
             <Grid container>
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
-                <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
+                <Typography variant='h4' fontFamily={'playfair display'} color='black'>Tune Range</Typography>
               </Grid>
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
               
@@ -330,15 +379,14 @@ export default function GridLayout() {
 
                   <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingTop='1rem' paddingBottom={'1rem'}>Total Note Count</Typography>
 
-                  <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 7}}>
-
+                  <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7}}>
                     <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center'}}>
-                      <div style={{width: `${window.innerWidth * 0.8 * 0.02}px`, height: `${window.innerWidth * 0.8 * 0.02}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
+                      <div style={{width: `${window.innerWidth * 0.8 * 0.01}px`, height: `${window.innerWidth * 0.8 * 0.01}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
                       <Typography variant='caption' color='black' fontFamily='montserrat' fontWeight='400' textAlign='center'>1</Typography>
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center'}}>
-                      <div style={{width: `${window.innerWidth * 0.8 * 0.11}px`, height: `${window.innerWidth * 0.8 * 0.11}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
+                      <div style={{width: `${window.innerWidth * 0.8 * 0.10}px`, height: `${window.innerWidth * 0.8 * 0.10}px`, background: '#F9DEF1', background: 'radial-gradient(circle,rgba(249, 222, 241, 1) 10%, rgba(104, 137, 252, 1) 95%)', borderRadius: '50%', opacity: '0.4'}}/>
                       <Typography variant='caption' color='black' fontFamily='montserrat' fontWeight='400' textAlign='center'>max</Typography>
                     </div>
 
@@ -383,13 +431,13 @@ export default function GridLayout() {
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}}></Grid>
 
-              <Grid size={4} paddingTop='1rem'>
-                <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='h5'>{collection}</Typography>
-                <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='p'>{tuneName}</Typography>
+              <Grid size={5} paddingTop='2rem'>
+                <Typography color='black' fontFamily='montserrat' fontWeight='500' variant='h6'>{collection}</Typography>
+                <Typography color='black' fontFamily='montserrat' fontWeight='450' variant='p'>{tuneName}</Typography>
               </Grid>
 
               <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
-                <CollectionOfTunesRangeChart  interaction={true} collection={collection} setTuneName={setTuneName} gridId='grid-size'/>
+                <CollectionOfTunesRangeChart  interaction={true} collection={collection} setTuneName={setTuneName} titles={titles} gridId='grid-size'/>
               </Grid>
 
               <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
@@ -413,128 +461,24 @@ export default function GridLayout() {
                 </div>
               </Grid>
 
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center' id='small-multiples'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[0]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={GoodmanVol1} width={'100%'}></img>
-                </div>
-              </Grid>
+              <Grid size={12} padding={'3rem'}></Grid>
 
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[1]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={GoodmanVol2} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[2]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={EdwardCollection} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid size={12} padding={'2rem'}/>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[3]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={ChildrenSongs} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[4]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={SelectionManuscripts} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[11]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={TraditionalIrishDanceTunes} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid size={12} padding={'2rem'}/>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[6]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={ArchivoDublin} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[7]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={FolkSongbook} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[8]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={CollectionOfCountryDances} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid size={12} padding={'2rem'}/>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[9]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={DanceMusic} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[10]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={GemsIrishMelody} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography textAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[5]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={TommyPeoples} width={'100%'}></img>
-                </div>
-              </Grid>
-              
-
-              <Grid size={12} padding={'2rem'}/>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[12]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={JigsAndReels} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[13]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={RyanCollectionPart1} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[14]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={RyanCollectionPart2} width={'100%'}></img>
-                </div>
-              </Grid>
-
-              <Grid size={12} padding={'2rem'}/>
-
-              <Grid sx={{height: 'fit-content'}} size={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems='center'>
-                <Typography  extAlign='center' variant='body' color={'black'} fontFamily='montserrat' fontWeight='500'>{`${collections[15]}`}</Typography>
-                <div style={{background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '95%'}}>
-                  <img src={OldIrishFolkMusicSongs} width={'100%'}></img>
-                </div>
-              </Grid>
+              {collectionsData.map((data, i) => {
+                return (
+                  <Grid className="flip-card" size={4} id='small-multiples'>
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img src={data.img} width={'100%'}></img>
+                      </div>
+                      <div class="flip-card-back">
+                        <Typography padding={'1rem'} variant='body' color='black' fontFamily={'montserrat'} fontWeight={600}>{data.title}</Typography>
+                        <Typography paddingLeft={'2rem'} paddingRight={'2rem'} paddingTop={'0.5rem'} paddingBottom={'1rem'} textAlign={'left'} variant='caption' color='black' fontFamily={'montserrat'}>{data.p}</Typography>
+                      </div>
+                    </div>
+                  </Grid>
+                )
+              })}
+             
 
           </Grid>
           </>
