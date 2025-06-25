@@ -8,7 +8,7 @@ import {useWindowSize} from "./UseWindowSize.jsx"
 import {fontSize, setOfTokensFromString} from '../functions.js'
 import { useRef } from 'react'
 
-const useAudio = (filename, router) => {
+const useAudio = (filename) => {
   const audioRef = useRef(null)
   const [play, setPlay] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -54,7 +54,7 @@ const useAudio = (filename, router) => {
       newAudio.removeEventListener('timeupdate', handleTimeUpdate)
       newAudio.removeEventListener('ended', handleEnded)
     }
-  }, [filename, router])
+  }, [filename])
 
   useLayoutEffect(() => {
     const audio = audioRef.current
@@ -76,9 +76,9 @@ function formatDuration(value) {
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
 }
 
-export default function MusicPlayer({filename, router}) {
+export default function MusicPlayer({filename}) {
   // playMusic returns a boolean (true/false) = (playing/not playing)
-  const [playMusic, setMusic, currentTime, duration, seek] = useAudio(`/audio_files/${filename}.mp3`, router)
+  const [playMusic, setMusic, currentTime, duration, seek] = useAudio(`/audio_files/${filename}.mp3`)
   console.log(`duration: ${duration}\ncurrent: ${currentTime}`)
   const [width, height] = useWindowSize()
 
@@ -86,15 +86,25 @@ export default function MusicPlayer({filename, router}) {
 
         <>
           {/* Align Play/Pause button with slider */}
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <div style={{display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          background: 'white',
+          width: '180px',
+          height: '30px',
+          padding: '10px',
+          borderRadius: '0.5rem',
+          borderColor: '#C7D0DD',
+          boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          }}>
 
               <IconButton variant="contained" sx={{padding: 0, minWidth: 0}} onClick={setMusic}>
                 {
                   // if music is play display pause, else diplay arrow
                   playMusic ? 
-                  (<PauseCircleFilledRoundedIcon sx={{ color: '#565656', minWidth: 0, fontSize: {xs: '1.5rem', sm: '1.8rem', md: '2.1rem', lg: '2.3rem', xl: '2.5rem'}}}/>)
+                  (<PauseCircleFilledRoundedIcon sx={{ color: '#b589fc', minWidth: 0, fontSize: {xs: '1.5rem', sm: '1.8rem', md: '2.1rem', lg: '2.3rem', xl: '2.5rem'}}}/>)
                   :
-                  (<PlayArrowRoundedIcon sx={{ color: '#565656', minWidth: 0, fontSize: {xs: '1.5rem', sm: '1.8rem', md: '2.1rem', lg: '2.3rem', xl: '2.5rem'}}}/>)
+                  (<PlayArrowRoundedIcon sx={{ color: '#b589fc', minWidth: 0, fontSize: {xs: '1.5rem', sm: '1.8rem', md: '2.1rem', lg: '2.3rem', xl: '2.5rem'}}}/>)
                   
                 }
               </IconButton>
@@ -103,13 +113,25 @@ export default function MusicPlayer({filename, router}) {
                 size="small"
                 value={currentTime || 0}
                 min={0}
-                max={duration || `${width * 0.2}px`}
+                max={duration || 130}
                 step={1}
                 defaultValue={0}
                 aria-label="song-duration"
                 valueLabelFormat={formatDuration(currentTime || 0)}
                 onChange={(_, value) => seek(value)}
-                sx={{width: `${width * 0.2}px`, color: '#565656', marginLeft: '1rem'}}
+                sx={{width: `${130}px`,
+                  color: '#b589fc',
+                  marginLeft: '1rem',
+                  '& .MuiSlider-thumb': {
+                    backgroundColor: '#b589fc',
+                    '&:hover': {
+                      boxShadow: '0 0 0 8px rgba(200, 168, 253, 0.3)',
+                    },
+                    '&.Mui-focusVisible': {
+                      boxShadow: '0 0 0 8px rgba(181, 137, 252, 0.4)',
+                    },
+                  },
+                }}
               />
           </div>
         </>

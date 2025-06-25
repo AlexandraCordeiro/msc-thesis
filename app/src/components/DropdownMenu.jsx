@@ -13,7 +13,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 export default function DropdownMenu({options, handleTuneChange, selectedValue="Select a Tune"}) {
   const createHandleMenuClick = (menuItem, index) => {
     return () => {
-      console.log(`Clicked on ${menuItem}`);
       handleTuneChange(menuItem)
     };
   };
@@ -184,7 +183,7 @@ const MenuButton = styled(BaseMenuButton)(
   transition: all 150ms ease;
   cursor: pointer;
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+ /*  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]}; */
   color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   overflow: hidden;
@@ -193,12 +192,12 @@ const MenuButton = styled(BaseMenuButton)(
 
 
   &:hover {
-    background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+    background: ${theme.palette.mode === 'dark' ? purple[800] : purple[50]};
+    border-color: ${theme.palette.mode === 'dark' ? purple[600] : purple[300]};
   }
 
   &:active {
-    background: ${theme.palette.mode === 'dark' ? grey[700] : grey[100]};
+    background: ${theme.palette.mode === 'dark' ? purple[700] : purple[100]};
   }
 
   &:focus-visible {

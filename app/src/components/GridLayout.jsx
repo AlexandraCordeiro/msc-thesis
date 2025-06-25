@@ -18,6 +18,7 @@ import Divider from '@mui/material/Divider'
 import { IconButton } from '@mui/material'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import MusicPlayer from './MusicPlayer.jsx'
 
 import csv from '../assets/data.csv'
 
@@ -28,10 +29,6 @@ import Matrix from '../assets/matrix.svg'
 import GoodmanVol1 from '../assets/Goodman Volume 1.svg'
 import GoodmanVol2 from '../assets/Goodman Volume 2.svg'
 import OldIrishFolkMusicSongs from '../assets/Old Irish Folk Music and Songs.svg'
-/* import FolkSongbook from '../assets/Folk Songbook.svg'
-import ArchivoDublin from '../assets/Archivo Dublin.svg'
-import CollectionOfCountryDances from '../assets/Collection of Country Dances.svg'
-import ChildrenSongs from '../assets/Children’s songs, rhymes and riddles collected by Hugh Shields.svg' */
 import EdwardCollection from '../assets/Edward Bunting’s Collection.svg'
 import JigsAndReels from '../assets/Jigs and Reels.svg'
 import RyanCollectionPart2 from '../assets/Ryan’s Mammoth Collection Part 2.svg'
@@ -42,10 +39,6 @@ import SelectionManuscripts from '../assets/Selection of Manuscripts by Pádraig
 import GemsIrishMelody from '../assets/Gems of Irish Melody.svg'
 import DanceMusic from '../assets/Dance Music of Ireland.svg'
 import RhymeGraph from './RhymeGraph.jsx'
-
-const title = "Visualization of Folk Music"
-const introText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-const howToRead = "How to read this visualization"
 
 const titles = csv.map(d => d.title)
 const filenames = csv.map(d => d.identifier)
@@ -151,7 +144,13 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} id='section-title'>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
               </Grid>
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
+
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
+                </div>
+              </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -173,7 +172,7 @@ export default function GridLayout() {
 
                 <Grid size={3} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                   {buttonClick ? (
-                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 10px', width: '200px', maxHeight: '400px', overflow: 'auto'}}>
+                    <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.5rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '200px', maxHeight: '400px', overflow: 'auto'}}>
                     
                     <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding='1rem' >Lyrics</Typography>
                     
@@ -222,7 +221,13 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} id='section-title'>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>Rhyme</Typography>
               </Grid>
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
+              
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
+                </div>
+              </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
@@ -262,15 +267,11 @@ export default function GridLayout() {
                   (
                   <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '200px'}}>
                     <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' padding={'1rem'}>How to Read</Typography>
-                    <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Matrix</Typography>
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Graph</Typography>
                     
-                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem'>
-                    Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j
+                    <Typography variant='caption' color={'black'} fontFamily='montserrat' padding='1rem' whiteSpace={'pre-line'}>
+                    {"Each node represents the final word of a verse.\nNodes that rhyme are connected and share the same color.\nVerses ending with the same word are not considered rhymes and are shown as white circles."}
                     </Typography>
-
-                    <div style={{alignSelf: 'center'}}>
-                        <img src={Matrix} style={{paddingBottom:'1rem'}}></img>
-                    </div>
 
                     <div style={{alignSelf: 'center', padding:'1rem'}}>
                       <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingLeft={'1rem'}>Show lyrics</Typography>
@@ -293,8 +294,14 @@ export default function GridLayout() {
                 <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                   <Typography variant='h4' fontFamily={'playfair display'} color='black'>How performance differs from the score</Typography>
                 </Grid>
-                <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
-                
+
+                <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                  <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                    <MusicPlayer filename={filename}></MusicPlayer>
+                  </div>
+                </Grid>
+
                 <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                   <Typography variant='body' color='black' fontFamily={'montserrat'}>
                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
@@ -349,13 +356,20 @@ export default function GridLayout() {
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
                 <Typography variant='h4' fontFamily={'playfair display'} color='black'>Tune Range</Typography>
               </Grid>
-              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
+
+              <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
+                </div>
+              </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
                 <Typography variant='body' color='black' fontFamily={'montserrat'}>
                   It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                 </Typography>
               </Grid>
+
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>

@@ -35,12 +35,12 @@ const typeOfIntervals = {
 }
 
 
-const intervalTextures = {
-  "0": textures.circles(),
+/* const intervalTextures = {
+  "0": textures.circles().size(8),
   "1": textures.lines(),
   "2": textures.lines().heavier(),
-  "3": textures.paths().d("caps").lighter(),
-  "4": textures.paths().d("caps").thicker(),
+  "3": textures.paths().d("caps").lighter().size(7),
+  "4": textures.paths().d("caps").thicker().size(7),
   "5": textures.paths().d("squares"),
   "6": textures.paths().d("nylon").lighter().shapeRendering("crispEdges"),
   "7": textures.paths().d("crosses").lighter(),
@@ -49,6 +49,23 @@ const intervalTextures = {
   "10": textures.paths().d("waves").lighter(),
   "11": textures.paths().d("waves").lighter(),
   "12": textures.paths().d("woven").thicker()
+} */
+
+
+  const intervalColors = {
+  "0": " #89d0fc",
+  "1":" #fcb589",
+  "2": " #fcb589",
+  "3": " #89d0fc",
+  "4": " #89d0fc",
+  "5": " #89d0fc",
+  "6": " #fcb589",
+  "7": " #89d0fc",
+  "8": " #89d0fc",
+  "9": " #89d0fc",
+  "10": " #fcb589",
+  "11": " #fcb589",
+  "12": " #89d0fc"
 }
 
 const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {   
@@ -85,12 +102,13 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
     if (type == "music-intervals") {
         let tooltipIntervals = d3.select("#tooltip-intervals")
         let key = `${d.source - d.target}`
-        let texture = intervalTextures[`${Math.abs(d.source - d.target)}`]
+        // let texture = intervalTextures[`${Math.abs(d.source - d.target)}`]
+        let intervalColor = intervalColors[`${Math.abs(d.source - d.target)}`]
         // update
 
 
-        let tooltipWidth = 120
-        let tooltipHeight = 30
+        let tooltipWidth = 125
+        let tooltipHeight = 40
         let offset = 10
 
         tooltipIntervals
@@ -104,21 +122,22 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
         .attr("rx", '0.5rem')
         .attr("ry", '0.5rem')
         .attr("fill", 'white')
-        .attr("stroke", "#C7D0DD")
-        .attr("stroke-width", 1)
         
         
         tooltipIntervals.append("text")
         .text(`${typeOfIntervals[key]}`)
         .attr("x", offset)
-        .attr("y", offset * 3)
+        .attr("y", offset + (tooltipHeight * 0.5) + 6)
         .attr("font-family", "montserrat")
         .attr("font-size", '12px')
         .attr("color", "black")
 
-        d3.select("svg").call(texture)
+       /*  d3.select("svg").call(texture)
         d3.select(e.currentTarget)
-        .style("fill", texture.url())
+        .style("fill", texture.url()) */
+
+        d3.select(e.currentTarget)
+        .style("fill", intervalColor)
        
     }
 
@@ -248,11 +267,12 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
         }
         return path
     })
+    .style("filter", 'drop-shadow(0 0 20px #602cb9)')
     .style("fill","rgba(0,0,0,0)")
     .style("pointer-events", "all")
     .attr("stroke", d => colorScale((idToNode[d.source].id + idToNode[d.target].id) / 2))
     .attr("stroke-width", 2)
-    .attr("opacity", d => opacityScale(d.count))
+    .attr("stroke-opacity", d => opacityScale(d.count))
     .on("mouseover", (e, d) => mouseOver(e, d, data, graphHeight, graphWidth, x, "music-intervals"))
     .on("mouseout", (e, d) => mouseOut(e, d, "music-intervals"))
 

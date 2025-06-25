@@ -128,3 +128,7 @@
   border-radius: 0.7rem;
   transform: rotateY(180deg);
 }
+
+.glow {
+  filter: drop-shadow(0 0 20px #602cb9)
+}
