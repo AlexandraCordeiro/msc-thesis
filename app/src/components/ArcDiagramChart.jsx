@@ -7,31 +7,31 @@ import textures from 'textures'
 
 
 const typeOfIntervals = {
-  "0": "Unison",
-  "1": "Minor Second (↑)",
-  "2": "Major Second (↑)",
-  "3": "Minor Third (↑)",
-  "4": "Major Third (↑)",
-  "5": "Perfect Fourth (↑)",
-  "6": "Tritone (↑)",
-  "7": "Perfect Fifth (↑)",
-  "8": "Minor Sixth (↑)",
-  "9": "Major Sixth (↑)",
-  "10": "Minor Seventh (↑)",
-  "11": "Major Seventh (↑)",
-  "12": "Octave (↑)",
-  "-1": "Minor Second (↓)",
-  "-2": "Major Second (↓)",
-  "-3": "Minor Third (↓)",
-  "-4": "Major Third (↓)",
-  "-5": "Perfect Fourth (↓)",
-  "-6": "Tritone (↓)",
-  "-7": "Perfect Fifth (↓)",
-  "-8": "Minor Sixth (↓)",
-  "-9": "Major Sixth (↓)",
-  "-10": "Minor Seventh (↓)",
-  "-11": "Major Seventh (↓)",
-  "-12": "Octave (↓)"
+  "0": "Unison\nConsonant",
+  "1": "Minor Second (↑)\nDissonant",
+  "2": "Major Second (↑)\nDissonant",
+  "3": "Minor Third (↑)\nConsonant",
+  "4": "Major Third (↑)\nConsonant",
+  "5": "Perfect Fourth (↑)\nConsonant",
+  "6": "Tritone (↑)\nDissonant",
+  "7": "Perfect Fifth (↑)\nConsonant",
+  "8": "Minor Sixth (↑)\nConsonant",
+  "9": "Major Sixth (↑)\nConsonant",
+  "10": "Minor Seventh (↑)\nDissonant",
+  "11": "Major Seventh (↑)\nDissonant",
+  "12": "Octave (↑)\nConsonant",
+  "-1": "Minor Second (↓)\nDissonant",
+  "-2": "Major Second (↓)\nDissonant",
+  "-3": "Minor Third (↓)\nConsonant",
+  "-4": "Major Third (↓)\nConsonant",
+  "-5": "Perfect Fourth (↓)\nConsonant",
+  "-6": "Tritone (↓)\nDissonant",
+  "-7": "Perfect Fifth (↓)\nConsonant",
+  "-8": "Minor Sixth (↓)\nConsonant",
+  "-9": "Major Sixth (↓)\nConsonant",
+  "-10": "Minor Seventh (↓)\nDissonant",
+  "-11": "Major Seventh (↓)\nDissonant",
+  "-12": "Octave (↓)\nConsonant"
 }
 
 
@@ -53,19 +53,19 @@ const typeOfIntervals = {
 
 
   const intervalColors = {
-  "0": " #89d0fc",
-  "1":" #fcb589",
-  "2": " #fcb589",
-  "3": " #89d0fc",
-  "4": " #89d0fc",
-  "5": " #89d0fc",
-  "6": " #fcb589",
-  "7": " #89d0fc",
-  "8": " #89d0fc",
-  "9": " #89d0fc",
-  "10": " #fcb589",
-  "11": " #fcb589",
-  "12": " #89d0fc"
+  "0": " #a1c5fa",
+  "1":" #b589fc",
+  "2": " #b589fc",
+  "3": " #a1c5fa",
+  "4": " #a1c5fa",
+  "5": " #a1c5fa",
+  "6": " #b589fc",
+  "7": " #a1c5fa",
+  "8": " #a1c5fa",
+  "9": " #a1c5fa",
+  "10": " #b589fc",
+  "11": " #b589fc",
+  "12": " #a1c5fa"
 }
 
 const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {   
@@ -101,15 +101,19 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
 
     if (type == "music-intervals") {
         let tooltipIntervals = d3.select("#tooltip-intervals")
+        tooltipIntervals.selectAll("*").remove()
         let key = `${d.source - d.target}`
         // let texture = intervalTextures[`${Math.abs(d.source - d.target)}`]
         let intervalColor = intervalColors[`${Math.abs(d.source - d.target)}`]
         // update
 
 
+        let radius = 5
         let tooltipWidth = 125
-        let tooltipHeight = 40
+        let tooltipHeight = 40 + radius * 5
         let offset = 10
+
+        console.log(intervalColor)
 
         tooltipIntervals
         .attr("opacity", 1)
@@ -123,14 +127,21 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
         .attr("ry", '0.5rem')
         .attr("fill", 'white')
         
-        
+        tooltipIntervals.append("circle")
+        .attr("cx", offset + radius)
+        .attr("cy", offset + radius * 3)
+        .attr("r", radius)
+        .attr("fill", intervalColor)
+
         tooltipIntervals.append("text")
         .text(`${typeOfIntervals[key]}`)
         .attr("x", offset)
         .attr("y", offset + (tooltipHeight * 0.5) + 6)
         .attr("font-family", "montserrat")
         .attr("font-size", '12px')
-        .attr("color", "black")
+        .attr("fill", "black")
+        .attr("white-space", "pre-line")
+        
 
        /*  d3.select("svg").call(texture)
         d3.select(e.currentTarget)
@@ -138,6 +149,7 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
 
         d3.select(e.currentTarget)
         .style("fill", intervalColor)
+        .style("fill-opacity", 0.5)
        
     }
 

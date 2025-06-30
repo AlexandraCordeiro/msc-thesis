@@ -1,17 +1,22 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import { downloadSVG } from "./downloadSVG.js";
+
+export const cleanString = (text) => {
+    return text.replace(/[^'’a-zA-Z\s]/g, '')
+}
 
 const colorScheme = [
-  "#b589fc",
-  "#a0cafa",
-  "#fcab58",
-  "#58fca0",
-  "#fc5858",
-  "#58a0fc",
-  "#fc58b5",
-  "#a0fc58",
-  "#fcfc58",
-  "#5858fc"
-]
+        "#b589fc",
+        "#a0cafa",
+        "#9fa0fd",
+        "#deb8f5",
+        "#e18a64",
+        "#ff7e16",
+        "#c7e1fc",
+        "#ff5163",
+        "#fe3eb7",
+        "#fe87f9"
+    ]
 
 let scaleRadial = (num) => {
     return d3.scaleRadial()
@@ -19,8 +24,19 @@ let scaleRadial = (num) => {
     .domain([0, num])
 }
 
+d3.select("body").append("button")
+.attr("type","button")
+.attr("class", "downloadButton")
+.text("Download SVG")
+.on("click", function() {
+    // download the svg
+    downloadSVG();
+});
+
 d3.csv("data.csv").then((data) => {
-    const svg = d3.select("#viz").append("svg").attr("width", window.innerWidth).attr("height", window.innerHeight)
+    const svgWidth =  window.innerWidth * 0.5
+    const svgHeight =  svgWidth
+    const svg = d3.select("#viz").append("svg").attr("width", svgWidth).attr("height", svgHeight).attr("id", "gree-gravel-rhyme-scheme")
 
     //Container for the gradients
     var defs = svg.append("defs");
@@ -37,35 +53,48 @@ d3.csv("data.csv").then((data) => {
     feMerge.append("feMergeNode")
     .attr("in","SourceGraphic");
 
-    const r = 250
-    let tune = data[8]
+    const r = svgWidth * 0.45
+    let tuneIndex = 4
+    let verses = data[tuneIndex].lyrics.split("\n")
+    let lastWords = []
+
+    verses.forEach(verse => {
+        let words = verse.split(/\s+/)
+        let numWords = words.length
+        console.log(words)
+        console.log(words[numWords -1])
+        lastWords.push(cleanString(words[numWords -1]))
+        
+    })
+
+    console.log(lastWords)
+    let tune = data[tuneIndex]
     let num = tune.rhyme.split(",").length
-    let ang = (2 * Math.PI) / num
+    let ang = ((2 * Math.PI) / num)
     let rhyme = tune.rhyme.split(",")
 
     let arcs = []
-
+    
     for (let i = 0; i < rhyme.length; i++) {
-        let source = rhyme[i]
+        let source = +rhyme[i]
         for (let j = i + 1; j < rhyme.length; j++) {
-            let target = rhyme[j]
+            let target = +rhyme[j]
             if (source == target && source != "") {
                 arcs.push({source: i, target: j})
             }
         }
     }
 
-    console.log(rhyme)
-    console.log(arcs)
-
+        
     svg
     .append("circle")
-    .attr("transform", `translate(${window.innerWidth * 0.5}, ${window.innerHeight * 0.5})`)
+    .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5})`)
     .attr("cx", 0)
     .attr("cy", 0)
     .attr("r", r)
     .attr("fill", "none")
-    .attr("stroke", "#b589fc")
+    .attr("stroke", "lightgray")
+    .attr("opacity", 0.5)
     .lower()
 
     const line = d3.line()
@@ -79,26 +108,29 @@ d3.csv("data.csv").then((data) => {
         .data(arcs)
         .enter()
         .append("path")
-        .attr("transform", `translate(${window.innerWidth * 0.5}, ${window.innerHeight * 0.5})`)
+        .style("filter", "drop-shadow(0 0 5px #602cb9)")
+        .attr("class", d => `rhyme-${+rhyme[d.source]}`)
+        .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5})`)
         .attr("d", d => {
             
-            const x1 = r * Math.cos(ang * d.source)
-            const y1 = r * Math.sin(ang * d.source)
-            const x2 = r * Math.cos(ang * d.target)
-            const y2 = r * Math.sin(ang * d.target)
+            const x1 = r * Math.cos(ang * d.source - (Math.PI / 2))
+            const y1 = r * Math.sin(ang * d.source - (Math.PI / 2))
+            const x2 = r * Math.cos(ang * d.target - (Math.PI / 2))
+            const y2 = r * Math.sin(ang * d.target - (Math.PI / 2))
             const xm = (x1 + x2) / 2
             const ym = (y1 + y2) / 2
 
             const points = [
             {x: x1, y: y1},
-            {x: xm, y: ym},
             {x: x2, y: y2}
             ]
+
+
             return line(points)
         })
         .attr("fill", "none")
         .attr("stroke", d => colorScheme[+rhyme[d.source] - 1] || "#ccc")
-        .attr("stroke-width", "1.5px")
+        .attr("stroke-width", "1px")
         .attr("opacity", 0.7)
     }
 
@@ -106,28 +138,53 @@ d3.csv("data.csv").then((data) => {
     .data(rhyme)
     .enter()
     .append("circle")
-    .attr("class", "nodes")
-    .attr("transform", `translate(${window.innerWidth * 0.5}, ${window.innerHeight * 0.5})`)
-    .attr("cx", (d, i) => r * Math.cos(ang * i))
-    .attr("cy", (d, i) => r * Math.sin(ang * i))
-    .attr("r", 10)
+    .style("filter", "drop-shadow(0 0 15px #602cb9)")
+    .attr("class", d => `rhyme-${+d}`)
+    .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5})`)
+    .attr("cx", (d, i) => r * Math.cos(ang * i - (Math.PI / 2)))
+    .attr("cy", (d, i) => r * Math.sin(ang * i - (Math.PI / 2)))
+    .attr("r", 20)
     .attr("fill", d => {
         if (d == "") {
-            return "white"
+            return "whitesmoke"
         }
         else {
             return colorScheme[+d - 1]
         }
     })
-    .attr("stroke", d => {
-        if (d == "") {
-            return "#b589fc"
-        }
-        else {
-            return "none"
-        }
-    })
 
-    // d3.selectAll(".nodes").style("filter", "url(#glow)")
+
+    // last word in verse
+    svg.selectAll(".last-word")
+    .data(lastWords)
+    .enter()
+    .append("text")
+    .attr("class", (d, i) => `rhyme-${+rhyme[i]}`)
+    .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5 + 6})`)
+    .attr("x", (d, i) => r * Math.cos(ang * i - (Math.PI / 2)))
+    .attr("y", (d, i) => r * Math.sin(ang * i - (Math.PI / 2)))
+    .attr("text-anchor", "middle")
+    .attr("font-family", "montserrat")
+    .attr("font-size", "10px")
+    .attr("font-weight", "500")
+    .text(d => d)        
+
+    // d3.selectAll("path").style("filter", "url(#glow)")
+
+    let set = new Set(rhyme)
+
+    set.forEach(elem => {
+        svg.selectAll(`.rhyme-${elem}`)
+        .on("mouseover", () => {
+            svg.selectAll("*")
+            .filter(function() {
+                return !this.classList.contains(`rhyme-${elem}`);
+            })
+            .attr("opacity", 0.2)
+        })
+        .on("mouseout", () => {
+            svg.selectAll("*").attr("opacity", 1)
+        })
+    });
     
 })

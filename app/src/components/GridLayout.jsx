@@ -1,5 +1,4 @@
 /* custom components */
-
 import CollectionOfTunesRangeChart from './CollectionOfTunesRangeChart.jsx'
 import ArcDiagramChart from './ArcDiagramChart.jsx'
 import SpectogramChart from './SpectogramChart.jsx'
@@ -8,6 +7,7 @@ import VerticalSteps from './VerticalSteps.jsx'
 import DropdownMenu from './DropdownMenu.jsx'
 import { useWindowSize } from './UseWindowSize.jsx'
 import HorizontalNonLinearStepper from './HorizontalNonLinearStepper.jsx'
+
 /* other components */
 import { useEffect } from 'react'
 import Typography from '@mui/material/Typography'
@@ -142,27 +142,27 @@ export default function GridLayout() {
           <>
             <Grid container>
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} id='section-title'>
-                <Typography variant='h4' fontFamily={'playfair display'} color='black'>The hidden patterns in song lyrics</Typography>
+                <Typography variant='h4' fontFamily={'playfair display'} color='black'>Lyrics</Typography>
               </Grid>
 
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
-                  <MusicPlayer filename={filename}></MusicPlayer>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                  <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
-                <Typography variant='body' color='black' fontFamily={'montserrat'}>
-                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                </Typography>
+                {/* <Typography variant='body' color='black' fontFamily={'montserrat'} whiteSpace={'pre-line'}>
+                  {"The lyrics of a song bring a rhythmic dimension to the music. It also provides a solid description.\nThis component makes the music sound more dynamic and lively.\nThe goal of this visualization is to identify the patterns in the lyrics of folk songs."}
+                </Typography> */}
               </Grid>
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
-                  </div>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
+                </div>
               </Grid>
             
               <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
@@ -224,21 +224,21 @@ export default function GridLayout() {
               
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
-                  <MusicPlayer filename={filename}></MusicPlayer>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
-                <Typography variant='body' color='black' fontFamily={'montserrat'}>
+                {/* <Typography variant='body' color='black' fontFamily={'montserrat'}>
                   It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                </Typography>
+                </Typography> */}
               </Grid>
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
                   </div>
               </Grid>
             
@@ -292,25 +292,25 @@ export default function GridLayout() {
             <>
               <Grid container>
                 <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
-                  <Typography variant='h4' fontFamily={'playfair display'} color='black'>How performance differs from the score</Typography>
+                  <Typography variant='h4' fontFamily={'playfair display'} color='black'>Performance</Typography>
                 </Grid>
 
                 <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                   <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
-                    <MusicPlayer filename={filename}></MusicPlayer>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                   </div>
                 </Grid>
 
                 <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
-                  <Typography variant='body' color='black' fontFamily={'montserrat'}>
+                 {/*  <Typography variant='body' color='black' fontFamily={'montserrat'}>
                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                  </Typography>
+                  </Typography> */}
                 </Grid>
                 <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                   <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                    <MusicPlayer filename={filename}></MusicPlayer>
                   </div>
                 </Grid>
               
@@ -325,18 +325,18 @@ export default function GridLayout() {
                 <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '10px', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '180px'}}>
                   
                   <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'}>Loudness</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'} paddingBottom={'1rem'}>Loudness (Db)</Typography>
                   <div style={{width: '100%', height: '25px', background: 'linear-gradient(90deg, #e0f4fd, #390160)', borderRadius: '0.25rem'}}/>
                   <div style={{display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent:'space-between', paddingBottom:'1rem'}}>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>min</Typography>
                     <Typography variant='caption' color={'black'} fontFamily='montserrat'>max</Typography>
                   </div>
 
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Score Contour</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Score melodic contour</Typography>
                   <div style={{display: 'flex', justifyContent: 'center', paddingTop: '1rem'}}>
                     <img src={ScoreContour} style={{paddingBottom:'1rem'}}></img>
                   </div>
-                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Audio Contour</Typography>
+                  <Typography variant='caption' color={'black'} fontFamily='montserrat' fontWeight={'500'}>Performance melodic contour</Typography>
                   <div style={{display: 'flex', justifyContent: 'center', paddingTop: '1rem'}}>
                     <img src={AudioContour}></img>
                   </div>
@@ -359,25 +359,25 @@ export default function GridLayout() {
 
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
-                  <MusicPlayer filename={filename}></MusicPlayer>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
+                  <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
-                <Typography variant='body' color='black' fontFamily={'montserrat'}>
+               {/*  <Typography variant='body' color='black' fontFamily={'montserrat'}>
                   It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                </Typography>
+                </Typography> */}
               </Grid>
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}} paddingTop={'1rem'} display={'flex'} flexDirection={'row'} justifyContent={'flex-end'}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
+                  <MusicPlayer filename={filename}></MusicPlayer>
                   </div>
               </Grid>
 
-                <Grid sx={{height: 'fit-content'}} size={9} id='grid-size'>
+                <Grid sx={{height: 'fit-content'}} size={9} id='grid-size' paddingTop={'3rem'}>
                   <ArcDiagramChart tune={filename} gridId={'grid-size'}/>
                 </Grid>
 
@@ -433,14 +433,14 @@ export default function GridLayout() {
             <Grid container>
 
               <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}}>
-                <Typography variant='h4' fontFamily={'playfair display'} color='black'>A look into the whole collection</Typography>
+                <Typography variant='h4' fontFamily={'playfair display'} color='black'>Collection of Tunes</Typography>
               </Grid>
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}}></Grid>
               
               <Grid size={{xs: 7, sm: 7, md: 5, xl: 4}} paddingTop={'1rem'}>
-                <Typography variant='body' color='black' fontFamily={'montserrat'}>
+                {/* <Typography variant='body' color='black' fontFamily={'montserrat'}>
                   It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                </Typography>
+                </Typography> */}
               </Grid>
 
               <Grid size={{xs: 5, sm: 5, md: 7, xl: 8}}></Grid>
@@ -476,6 +476,9 @@ export default function GridLayout() {
               </Grid>
 
               <Grid size={12} padding={'3rem'}></Grid>
+              <Grid size={12}>
+                <Typography color='black' fontFamily='playfair display' fontWeight='500' variant='h5' paddingBottom='2rem'>Other folk collections</Typography>
+              </Grid>
 
               {collectionsData.map((data, i) => {
                 return (
@@ -512,7 +515,7 @@ export default function GridLayout() {
 
             {/* Intro */}
             <Grid size={{xs: 11, sm: 9, md: 5, lg: 5, xl: 4}} paddingTop={{xs: '7rem'}}>
-              <Typography variant='h3' fontFamily={'playfair display'} color={'black'} fontWeight={500} textAlign={'left'}>
+              <Typography variant='h2' fontFamily={'playfair display'} color={'black'} fontWeight={500} textAlign={'left'}>
                 Visualization of Folk Music
               </Typography>
             </Grid>

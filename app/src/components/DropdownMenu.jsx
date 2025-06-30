@@ -88,7 +88,7 @@ const Listbox = styled('ul')(
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   box-shadow: 0px 4px 30px ${theme.palette.mode === 'dark' ? grey[900] : grey[200]};
-  z-index: 1;
+  z-index: 3000;
 
   .closed & {
     opacity: 0;

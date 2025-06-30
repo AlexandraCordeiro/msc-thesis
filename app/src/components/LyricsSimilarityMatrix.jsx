@@ -3,6 +3,9 @@ import * as d3 from "d3";
 import {setOfTokensFromString, arrayOfTokensFromString, cleanString, lyricsZoomBehavior, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import ClipLoader from "react-spinners/ClipLoader"
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+
 
 const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
 
@@ -10,6 +13,22 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     removeElement("tooltip-sparklines")
     removeElement("tooltip-intervals")
     removeElement("tooltip-score")
+
+    // zoom icons
+    /* d3.select("body")
+    .append("button")
+    .attr("id", "zoom-in")
+    .append("i")
+    .attr("class", "fa fa-search-plus")
+    .attr("aria-hidden", "true")
+ */
+
+    /* d3.select("body")
+    .append("button")
+    .attr("id", "zoom-out")
+    .append("i")
+    .attr("class", "fa fa-search-minus")
+    .attr("aria-hidden", "true") */
 
     const svgRef = useRef(null);
     const [width, height] = useWindowSize(gridId);
@@ -60,7 +79,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
             let circles = []
 
             songTokens.forEach((token_j, j) => {
-                if (token_i === token_j) {
+                if (token_i.toLowerCase() === token_j.toLowerCase()) {
                     fillColor = colors[token_i.toLowerCase()]
                     circles.push({
                         id: `col-${j}`,
@@ -71,8 +90,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
                         token: token_i
                     })
                 }
-                /* else {fillColor = "#f0f0f0"} */
-
             })
 
             rows.push(circles)
@@ -150,13 +167,14 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         // clear all previous content on refresh
         svg.selectAll("*").remove();
         d3.select("#tooltip-lyrics").remove()
+
         
         // tooltip
         d3.select("body")
         .append("div")
         .attr("id", "tooltip-lyrics")
         .attr("style", "position: absolute; opacity: 0;")
-        
+
         // chart
         const chart = svg.append('g')
         .attr("id", "lyrics-chart")

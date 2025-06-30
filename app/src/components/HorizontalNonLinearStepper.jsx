@@ -40,7 +40,6 @@ export default function HorizontalNonLinearStepper({steps, activeStep, setActive
       borderRadius: '0.7rem',
       position: 'sticky',
       top: 0,
-      zIndex: 1000,
       boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
       }}>
       <IconButton type='button' disabled={activeStep === 0} onClick={handleBack} sx={{borderRadius: '50%', marginLeft: `-${(40-24) * 0.5}px`}}>
