@@ -1,8 +1,7 @@
-import React, {useRef, useCallback, useMemo, useLayoutEffect, useState, useEffect} from "react";
+import React, {useRef, useCallback, useState, useEffect} from "react";
 import * as d3 from "d3";
-import {setOfTokensFromString, arrayOfTokensFromString, cleanString, lyricsZoomBehavior, removeElement} from "../functions.js";
+import {cleanString, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
-import ClipLoader from "react-spinners/ClipLoader"
 
 const RhymeGraph = ({tuneIndex, gridId}) => {
 
@@ -124,7 +123,10 @@ const RhymeGraph = ({tuneIndex, gridId}) => {
             let source = +rhyme[i]
             for (let j = i + 1; j < rhyme.length; j++) {
                 let target = +rhyme[j]
-                if (source == target && source != "") {
+                if (source == target && source != "" && (lastWords[i] != lastWords[j])) {
+                    console.log(lastWords[i])
+                    console.log(lastWords[j])
+                    console.log('+-+-+-+-+-+')
                     arcs.push({source: i, target: j})
                 }
             }
@@ -183,6 +185,7 @@ const RhymeGraph = ({tuneIndex, gridId}) => {
         .data(rhyme)
         .enter()
         .append("circle")
+        .style("cursor", 'default')
         .style("filter", "drop-shadow(0 0 15px #602cb9)")
         .attr("class", d => `rhyme-${+d}`)
         .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5})`)

@@ -1,6 +1,4 @@
-import { useState, seLayoutEffect, useLayoutEffect} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useLayoutEffect} from 'react'
 import './App.css'
 import GridLayout from './components/GridLayout.jsx'
 
@@ -22,7 +20,6 @@ function App() {
 
   return (
     <>
-    {/* <DashboardLayoutBasic/> */}
     <div className="background">
       <GridLayout/>
     </div>

@@ -1,13 +1,8 @@
-import React, {useRef, useEffect, useLayoutEffect} from "react";
+import {useRef, useLayoutEffect} from "react";
 import * as d3 from "d3";
 import {drawLinks, drawXAxis, radsToDegrees, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import { noteToMidi } from "../functions.js";
-
-function degToRadians(degrees){
-  var pi = Math.PI;
-  return degrees * (pi/180);
-}
 
 
 function calcInnerAndOutterRadius(data) {
@@ -48,6 +43,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         .attr("id", "collection-tunes")
+        // .attr("transform", `translate(${(width * 0.5 - graphWidth * 0.5)}, 0)`)
         
         // clear all previous content on refresh
         const everything = svg.selectAll("*");
@@ -55,7 +51,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
         
         const group = svg.append("g")
         .attr("id", "center")
-        .attr("transform", `translate(${graphWidth}, ${graphHeight})`)
+        .attr("transform", `translate(${graphWidth * 0.5 + (width * 0.5 - graphWidth * 0.5)}, ${graphHeight})`)
         
         
         
@@ -67,9 +63,6 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
 
             var segmentInnerRadius = calcInnerAndOutterRadius(ids)[0]
             var segmentOutterRadius = calcInnerAndOutterRadius(ids)[1]
-
-            console.log(segmentInnerRadius)
-            console.log(segmentOutterRadius)
 
             var n = data.length
             var ang = (2 * Math.PI) / n 
@@ -124,15 +117,6 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                 // Add links
                 let p = 2 * (Math.PI * innerRadius) / data.length
                 const links = drawLinks(d, thisGroup, p, graphWidth, x, extent)
-
-
-               /*  let symbolSize = graphWidth * 0.2
-                thisGroup.append("path")
-                .attr("d", d3.symbol(d3.symbolCircle).size(symbolSize))
-                .attr("fill", "none")
-                .attr("class", "symbol")
-                .attr("transform", `translate(${graphWidth + 10}, 0)`) */
-
         
             })
 
@@ -146,14 +130,12 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                     .transition()
                     .ease(d3.easeCubicIn)
                     .attr("transform", `${d.originalTransform} scale(${scaleValue}, ${scaleValue})`)
-                    group.selectAll('.links').attr("opacity", 0.13);
+                    group.selectAll('.links').attr("opacity", 0.3);
                     hovered.selectAll('.links').attr("opacity", 1);
-                    hovered.selectAll('.x-axis').attr("opacity", 0.6);
+                    hovered.selectAll('.x-axis').attr("opacity", 0.6)
                     hovered.select('.donut').attr("opacity", 0);
                     hovered.select('.symbol').attr("fill", "#7303c0")
                     hovered.select('.donut').attr("box-shadow", "rgba(0, 0, 0, 0.24) 0px 3px 8px")
-                    console.log(parseInt(hovered.attr("id").split("-").slice(-1)) - 1)
-                    console.log(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
                     setTuneName(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
                 }
 

@@ -103,7 +103,6 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
         idToNode[n.id] = n;
     });
     
-    console.log(idToNode)
     // Add the links
     const links = group
     .append('g')
@@ -114,8 +113,6 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     .join('path')
     .attr('d', (d, i) => {
         let y = 0
-        console.log(d.source)
-        console.log(d.target)
         let startid = idToNode[d.source]
         let endid = idToNode[d.target]
         let start = x(idToNode[d.source].id)      // start node on the x axis
@@ -327,7 +324,6 @@ export function drawXAxis(data, group, graphHeight, x, extent) {
     .attr("font-size", "12px")
     .attr("id", "note-names-x-axis")
 
-    console.log(extent)
     noteNamesAxis
     .call(
         d3.axisBottom(x)
@@ -341,7 +337,6 @@ export function drawXAxis(data, group, graphHeight, x, extent) {
 export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContainer, graphWidth, songTokens, size, ratio, matrixSize)  {
     let lastK = -1
     
-    // console.log(ratio)
     return d3.zoom()
     .scaleExtent([1, ratio])
     .translateExtent([[0, 0], [matrixSize, matrixSize]])
@@ -357,6 +352,13 @@ export function lyricsZoomBehavior(axis, numOfTokens, xAxis, yAxis, zoomContaine
         const effectiveTickStep = Math.max(tickStep, 1);
 
         zoomContainer.attr("transform", event.transform)
+
+        if (event.transform.k < ratio) {
+            d3.select('.centered-svg').attr("cursor", 'zoom-in')
+        }
+        else {
+            d3.select('.centered-svg').attr("cursor", 'zoom-out')
+        }
 
         xAxis.attr("transform", `translate(${event.transform.x}, ${event.transform.y + axisInnerPadding})`)
         yAxis.attr("transform", `translate(${event.transform.x + axisInnerPadding}, ${event.transform.y})`)

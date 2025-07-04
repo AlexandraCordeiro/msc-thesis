@@ -1,10 +1,10 @@
-import React, {useRef, useLayoutEffect, useMemo, useCallback, useState, useEffect} from "react";
+import React, {useRef, useMemo, useCallback, useState, useEffect} from "react";
 import * as d3 from "d3";
 import {noteToMidi, hzToMidi, midiToHz, midiToNote, getStartOffset, fontSize, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
-import ClipLoader from "react-spinners/ClipLoader"
+import BarLoader from "react-spinners/BarLoader"
 
-const SpectogramChart = ({tune, gridId}) => {
+const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
     // remove unwanted tooltips
     removeElement("tooltip-lyrics")
@@ -235,7 +235,9 @@ const SpectogramChart = ({tune, gridId}) => {
         const scoreContour = viz.append("g").attr("id", "score-contour")
         
         const maxDb = d3.max(data.audio_spectogram_data.map(d => +d.db))
+        setMaxDb(maxDb.toFixed(2))
         const minDb = d3.min(data.audio_spectogram_data.map(d => +d.db))
+        setMinDb(minDb.toFixed(2))
     
         // audio contour
 
@@ -454,8 +456,8 @@ const SpectogramChart = ({tune, gridId}) => {
                 .attr('y', bBox.y - 3)
                 .attr('height', bBox.height + 6)
                 .attr('width', bBox.width + 6)
-                .attr("rx", '0.5rem')
-                .attr("ry", '0.5rem')
+                .attr("rx", '0.3rem')
+                .attr("ry", '0.3rem')
                 .attr("fill", "white")
                 .attr("opacity", 0.6)
                 .lower()    
@@ -495,7 +497,7 @@ const SpectogramChart = ({tune, gridId}) => {
 
     return loading ? 
         (<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-            <ClipLoader color="#d0b6fa" loading={loading} size={width * 0.05}/>
+            <BarLoader color="#d0b6fa" loading={loading} size={width * 0.05}/>
         </div>)
         : 
         (<svg ref={svgRef}/>)

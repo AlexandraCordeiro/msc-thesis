@@ -4,10 +4,9 @@ import { Dropdown } from '@mui/base/Dropdown';
 import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
-import { fontWeight, styled, width } from '@mui/system';
+import { styled } from '@mui/system';
 import { CssTransition } from '@mui/base/Transitions';
 import { PopupContext } from '@mui/base/Unstable_Popup';
-import { IconButton, Select, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function DropdownMenu({options, handleTuneChange, selectedValue="Select a Tune"}) {
@@ -79,7 +78,7 @@ const Listbox = styled('ul')(
   padding: 6px;
   margin: auto;
   margin-top: 10px;  
-  max-height: 250px;      
+  max-height: 350px;      
   width: 200px;
   border-radius: 12px;
   overflow: auto;

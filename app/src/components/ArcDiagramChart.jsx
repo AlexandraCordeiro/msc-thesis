@@ -2,8 +2,6 @@ import { useRef, useEffect, useLayoutEffect } from "react"
 import * as d3 from "d3"
 import {drawNoteFrequencyRings, drawSparklines, midiToNote, removeElement, fontSize, noteToMidi} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
-// @ts-ignore
-import textures from 'textures'
 
 
 const typeOfIntervals = {
@@ -112,8 +110,6 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
         let tooltipWidth = 125
         let tooltipHeight = 40 + radius * 5
         let offset = 10
-
-        console.log(intervalColor)
 
         tooltipIntervals
         .attr("opacity", 1)
@@ -291,7 +287,7 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     return links
 }
 
-const ArcDiagramChart = ({tune, gridId}) => {
+const ArcDiagramChart = ({tune, gridId, setMaxCount}) => {
 
 
     // remove unwanted tooltips
@@ -352,6 +348,7 @@ const ArcDiagramChart = ({tune, gridId}) => {
             const links = drawLinks(data, group, graphHeight, graphWidth, x)
         
             // Add frequency rings
+            setMaxCount(d3.max(data.nodes.map(d => d.frequency)))
             const rings = drawNoteFrequencyRings(data, group, graphWidth, x)
         
             // Add X Axis

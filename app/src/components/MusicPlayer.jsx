@@ -1,11 +1,8 @@
 import {useLayoutEffect, useState} from 'react'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded'
 import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded'
-import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded'
-import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
 import {Container, Grid, IconButton, Slider} from '@mui/material'
 import {useWindowSize} from "./UseWindowSize.jsx"
-import {fontSize, setOfTokensFromString} from '../functions.js'
 import { useRef } from 'react'
 
 const useAudio = (filename) => {
@@ -79,7 +76,6 @@ function formatDuration(value) {
 export default function MusicPlayer({filename}) {
   // playMusic returns a boolean (true/false) = (playing/not playing)
   const [playMusic, setMusic, currentTime, duration, seek] = useAudio(`/audio_files/${filename}.mp3`)
-  console.log(`duration: ${duration}\ncurrent: ${currentTime}`)
   const [width, height] = useWindowSize()
 
   return (
@@ -109,7 +105,9 @@ export default function MusicPlayer({filename}) {
                 }
               </IconButton>
               <Slider
+                valueLabelDisplay="auto"
                 key={filename}
+                color="#b589fc"
                 size="small"
                 value={currentTime || 0}
                 min={0}
@@ -118,12 +116,13 @@ export default function MusicPlayer({filename}) {
                 defaultValue={0}
                 aria-label="song-duration"
                 valueLabelFormat={formatDuration(currentTime || 0)}
+                getAriaValueText={() => {formatDuration(currentTime || 0)}}
                 onChange={(_, value) => seek(value)}
                 sx={{width: `${130}px`,
-                  color: '#b589fc',
+                  color: ' #b589fc',
                   marginLeft: '1rem',
                   '& .MuiSlider-thumb': {
-                    backgroundColor: '#b589fc',
+                    backgroundColor: ' #b589fc',
                     '&:hover': {
                       boxShadow: '0 0 0 8px rgba(200, 168, 253, 0.3)',
                     },

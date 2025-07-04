@@ -1,10 +1,8 @@
-import React, {useRef, useCallback, useMemo, useLayoutEffect, useState, useEffect} from "react";
+import{useRef, useCallback, useMemo, useState, useEffect} from "react";
 import * as d3 from "d3";
 import {setOfTokensFromString, arrayOfTokensFromString, cleanString, lyricsZoomBehavior, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
-import ClipLoader from "react-spinners/ClipLoader"
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import BarLoader from "react-spinners/BarLoader"
 
 
 const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
@@ -13,22 +11,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     removeElement("tooltip-sparklines")
     removeElement("tooltip-intervals")
     removeElement("tooltip-score")
-
-    // zoom icons
-    /* d3.select("body")
-    .append("button")
-    .attr("id", "zoom-in")
-    .append("i")
-    .attr("class", "fa fa-search-plus")
-    .attr("aria-hidden", "true")
- */
-
-    /* d3.select("body")
-    .append("button")
-    .attr("id", "zoom-out")
-    .append("i")
-    .attr("class", "fa fa-search-minus")
-    .attr("aria-hidden", "true") */
 
     const svgRef = useRef(null);
     const [width, height] = useWindowSize(gridId);
@@ -43,7 +25,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         if (!csvData) return
 
         setLoading(true)
-        console.log(loading)
         
         const svgWidth = width * 0.9;
         const svgHeight = svgWidth;
@@ -52,8 +33,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
 
         let data = csvData
         let song = data[tuneIndex]
-        console.log(song)
-        console.log(song.lyrics)
         let songTokens = arrayOfTokensFromString(cleanString(song.lyrics))
         let setOfTokens = d3.shuffle(Array.from(setOfTokensFromString(cleanString(song.lyrics.toLowerCase()))))
         let numOfTokens = songTokens.length
@@ -129,7 +108,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     useEffect(() => {
         d3.csv("data.csv").then(function(data) {
             setCsvData(data) // Cache the data
-            console.log(data)
         }).catch(error => {
             console.error("Error loading CSV data:", error);
         });
@@ -197,6 +175,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
             .attr("cy", d => d.cy)
             .attr("r", d => d.r)
             .attr("fill", d => d.fill)
+            .attr("cursor", "default")
             .on("mouseover", (e, d) => mouseOver(d.token, d3.select(e.target)))
             .on("mouseout", e => mouseOut(d3.select(e.target), size))
             .on("mousemove", e => mouseMove(e));
@@ -223,14 +202,13 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
 
         requestAnimationFrame(() => {
             setLoading(false)
-            console.log(loading)
         })
         
     }, [tuneIndex, csvData, loading]) 
 
      return loading ? 
         (<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-            <ClipLoader color="#d0b6fa" loading={loading} size={width * 0.05}/>
+            <BarLoader color="#d0b6fa" loading={loading} size={width * 0.05}/>
         </div>)
         : 
         (<svg ref={svgRef}/>)

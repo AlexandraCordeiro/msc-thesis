@@ -1,15 +1,10 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { IconButton } from '@mui/material';
-import { fontSize } from '../functions';
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
 export default function HorizontalNonLinearStepper({steps, activeStep, setActiveStep}) {
 
