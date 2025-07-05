@@ -20,17 +20,17 @@ const RhymeGraph = ({tuneIndex, gridId}) => {
     const [loading, setLoading] = useState(false)
 
     const colorScheme = [
-          "#b589fc",
-          "#a0cafa",
-          "#9fa0fd",
-          "#deb8f5",
-          "#e18a64",
-          "#ff7e16",
-          "#c7e1fc",
-          "#ff5163",
-          "#fe3eb7",
-          "#fe87f9"
-        ]
+            "#b589fc",
+            "#a0cafa",
+            "#e0cffe",
+            "#fabcd1",
+            "#9c72e2",
+            "#878bff",
+            "#5c94f5",
+            "#f0e6ff",
+            "#e0cffe",
+            "#ffe6bf"
+            ]
     
     const mouseOver = useCallback((d, circle) => {
         d3.select("#tooltip-lyrics")
