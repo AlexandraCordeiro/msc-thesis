@@ -9,8 +9,9 @@ export const arrayOfTokensFromString = (text) => {
 }
 
 export const cleanString = (text) => {
-    return text.replace(/[^'’a-zA-Z\s]/g, '')
-}
+    if (typeof text !== 'string') return '';
+    return text.replace(/[^'’a-zA-Z\s]/g, '');
+};
 
 export const fontSize = (windowWidth) => {
 
