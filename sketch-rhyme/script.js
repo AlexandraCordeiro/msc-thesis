@@ -6,17 +6,17 @@ export const cleanString = (text) => {
 }
 
 const colorScheme = [
-        "#b589fc",
-        "#a0cafa",
-        "#9fa0fd",
-        "#deb8f5",
-        "#e18a64",
-        "#ff7e16",
-        "#c7e1fc",
-        "#ff5163",
-        "#fe3eb7",
-        "#fe87f9"
-    ]
+          "#b589fc",
+          "#a0cafa",
+          "#e0cffe",
+          "#fabcd1",
+          "#9c72e2",
+          "#878bff",
+          "#5c94f5",
+          "#f0e6ff",
+          "#e0cffe",
+          "#ffe6bf"
+        ]
 
 let scaleRadial = (num) => {
     return d3.scaleRadial()
@@ -36,7 +36,7 @@ d3.select("body").append("button")
 d3.csv("data.csv").then((data) => {
     const svgWidth =  window.innerWidth * 0.5
     const svgHeight =  svgWidth
-    const svg = d3.select("#viz").append("svg").attr("width", svgWidth).attr("height", svgHeight).attr("id", "gree-gravel-rhyme-scheme")
+    const svg = d3.select("#viz").append("svg").attr("width", svgWidth).attr("height", svgHeight).attr("id", "gree-gravel-rhyme-scheme").style("overflow", "visible")
 
     //Container for the gradients
     var defs = svg.append("defs");
@@ -54,7 +54,7 @@ d3.csv("data.csv").then((data) => {
     .attr("in","SourceGraphic");
 
     const r = svgWidth * 0.45
-    let tuneIndex = 4
+    let tuneIndex = 8
     let verses = data[tuneIndex].lyrics.split("\n")
     let lastWords = []
 
@@ -79,7 +79,7 @@ d3.csv("data.csv").then((data) => {
         let source = +rhyme[i]
         for (let j = i + 1; j < rhyme.length; j++) {
             let target = +rhyme[j]
-            if (source == target && source != "") {
+            if (source == target && source != "" && (lastWords[i] != lastWords[j])) {
                 arcs.push({source: i, target: j})
             }
         }
@@ -143,7 +143,7 @@ d3.csv("data.csv").then((data) => {
     .attr("transform", `translate(${svgWidth * 0.5}, ${svgHeight * 0.5})`)
     .attr("cx", (d, i) => r * Math.cos(ang * i - (Math.PI / 2)))
     .attr("cy", (d, i) => r * Math.sin(ang * i - (Math.PI / 2)))
-    .attr("r", 20)
+    .attr("r", 30)
     .attr("fill", d => {
         if (d == "") {
             return "whitesmoke"
@@ -165,7 +165,7 @@ d3.csv("data.csv").then((data) => {
     .attr("y", (d, i) => r * Math.sin(ang * i - (Math.PI / 2)))
     .attr("text-anchor", "middle")
     .attr("font-family", "montserrat")
-    .attr("font-size", "10px")
+    .attr("font-size", "12px")
     .attr("font-weight", "500")
     .text(d => d)        
 
