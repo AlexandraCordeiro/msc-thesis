@@ -1,0 +1,43 @@
+# Logs
+/app/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build and dependencies
+/app/node_modules
+/app/dist
+/app/dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+/Archivo Dublin
+/Cancionero de Torner
+/Cancionero popular
+/Collection of Country Dances
+/Dance music of Ireland
+/Gems of Irish Melody
+/Jigs and Reels
+/Ryan’s Mammoth Collection
+/Traditional Irish Dance Tunes Composed by James Kelly (vol.1)
+/Old Irish Folk Music and Songs
+/goodman_vol_1_xml
+/goodman_vol_2_xml
+/IE_1797_BT_EB_xml
+/IE-2019-D-HLS
+/IE-2021-KY-AP
+/IE-2023-DL-TP
+/sketch-rhyme
