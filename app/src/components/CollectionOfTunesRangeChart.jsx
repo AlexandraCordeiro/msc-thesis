@@ -32,7 +32,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
         // D3 Code
 
         // set the dimensions and margins of the graph
-        const svgWidth = width * 0.8,
+        const svgWidth = width,
         svgHeight = svgWidth,
         innerRadius = 0,
         graphHeight = svgHeight / 2,
@@ -51,7 +51,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
         
         const group = svg.append("g")
         .attr("id", "center")
-        .attr("transform", `translate(${graphWidth}, ${graphHeight * 0.3})`)
+        .attr("transform", `translate(${(graphWidth * 0.5) + (svgWidth - graphWidth) * 0.5}, ${(graphHeight * 0.5) + (svgHeight - graphHeight) * 0.5})`)
         
         
         

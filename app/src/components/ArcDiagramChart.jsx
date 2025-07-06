@@ -322,7 +322,7 @@ const ArcDiagramChart = ({tune, gridId, setMaxCount}) => {
 
         // set the dimensions and margins of the graph
         const svgWidth = width * 0.9,
-        svgHeight = width,
+        svgHeight = width * 0.5,
         graphWidth = svgWidth * 0.9,
         graphHeight = svgHeight
         
