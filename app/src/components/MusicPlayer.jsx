@@ -91,7 +91,7 @@ export default function MusicPlayer({filename}) {
           padding: '10px',
           borderRadius: '0.5rem',
           borderColor: '#C7D0DD',
-          boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'
           }}>
 
               <IconButton variant="contained" sx={{padding: 0, minWidth: 0}} onClick={setMusic}>

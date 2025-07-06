@@ -191,7 +191,7 @@ export default function GridLayout() {
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
                   <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
-                 <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '3rem'}}>
+                 <div style={{display: 'flex', flexDirection: 'column', paddingTop: '1rem', paddingBottom: '3rem'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
                   <MusicPlayer filename={filename}></MusicPlayer>
                 </div>
@@ -230,7 +230,7 @@ export default function GridLayout() {
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
                   <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
-                 <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '3rem'}}>
+                 <div style={{display: 'flex', flexDirection: 'column', paddingTop: '1rem', paddingBottom: '3rem'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
                   <MusicPlayer filename={filename}></MusicPlayer>
                 </div>
@@ -268,7 +268,7 @@ export default function GridLayout() {
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
                   <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
-                 <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '3rem'}}>
+                 <div style={{display: 'flex', flexDirection: 'column', paddingTop: '1rem', paddingBottom: '3rem'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
                   <MusicPlayer filename={filename}></MusicPlayer>
                 </div>
@@ -327,7 +327,7 @@ export default function GridLayout() {
                   <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
 
-                <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '3rem'}}>
+                <div style={{display: 'flex', flexDirection: 'column', paddingTop: '1rem', paddingBottom: '3rem'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Play</Typography>
                   <MusicPlayer filename={filename}></MusicPlayer>
                 </div>
