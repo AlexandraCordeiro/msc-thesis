@@ -1,3 +1,0 @@
-public/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
-public/**/*.json filter=lfs diff=lfs merge=lfs -text
-public/**/*.csv filter=lfs diff=lfs merge=lfs -text
