@@ -9,10 +9,10 @@ import { CssTransition } from '@mui/base/Transitions';
 import { PopupContext } from '@mui/base/Unstable_Popup';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-export default function DropdownMenu({options, handleTuneChange, selectedValue="Select a Tune"}) {
+export default function DropdownMenu({options, handleChange, selectedValue="Select"}) {
   const createHandleMenuClick = (menuItem, index) => {
     return () => {
-      handleTuneChange(menuItem)
+      handleChange(menuItem)
     };
   };
 
@@ -29,7 +29,7 @@ export default function DropdownMenu({options, handleTuneChange, selectedValue="
         <Menu slots={{ listbox: AnimatedListbox }} width="12px">
             {options.map((option, index) => (
                 <MenuItem
-                key={index}
+                key={`${option}-${index}`}
                 sx={{ fontFamily: 'Montserrat', fontSize: '14px', fontWeight: '450'}}
                 value={option}
                 onClick={createHandleMenuClick(option, index)}

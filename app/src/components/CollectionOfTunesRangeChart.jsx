@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import {drawLinks, drawXAxis, radsToDegrees, removeElement} from "../functions.js";
 import {useWindowSize} from "./UseWindowSize.jsx"
 import { noteToMidi } from "../functions.js";
-
+import BarLoader from "react-spinners/BarLoader"
 
 function calcInnerAndOutterRadius(data) {
     const numArray = new Float64Array(data);
@@ -17,7 +17,7 @@ function calcInnerAndOutterRadius(data) {
 
 
 const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interaction, titles}) => {
-
+    
     // remove unwanted tooltips
     removeElement("tooltip-lyrics")
     removeElement("tooltip-sparklines")
@@ -51,7 +51,7 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
         
         const group = svg.append("g")
         .attr("id", "center")
-        .attr("transform", `translate(${graphWidth * 0.5 + (width * 0.5 - graphWidth * 0.5)}, ${graphHeight})`)
+        .attr("transform", `translate(${graphWidth}, ${graphHeight * 0.3})`)
         
         
         
@@ -136,7 +136,8 @@ const CollectionOfTunesRangeChart = ({collection, setTuneName, gridId, interacti
                     hovered.select('.donut').attr("opacity", 0);
                     hovered.select('.symbol').attr("fill", "#7303c0")
                     hovered.select('.donut').attr("box-shadow", "rgba(0, 0, 0, 0.24) 0px 3px 8px")
-                    setTuneName(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
+                    // setTuneName(titles[parseInt(hovered.attr("id").split("-").slice(-1)) - 1])
+                    setTuneName(hovered.attr("id"))
                 }
 
             })

@@ -6,8 +6,8 @@ import json
 import pandas as pd
 import gc  # Garbage collector
 
-collection_of_tunes_dir = Path('./IE-2019-D-HLS')
-mxml_files = collection_of_tunes_dir / "mxml"
+collection_of_tunes_dir = Path('../app/public')
+mxml_files = Path("./IE-2019-D-HLS")
 audio_files = collection_of_tunes_dir / "audio_files"
 
 audio_vs_score = collection_of_tunes_dir / "audio_vs_score"
@@ -56,22 +56,24 @@ for audio in tqdm(audio_files.glob('*.mp3')):
       
       # Fundamental Frequency
       f0, time_f0, f0_db = get_fundamental_frequency(y=y, sr=sr, spectogram_data=spectogram_data)
-      melodic_contour = [{"time": time_f0.tolist(), "f0": f0.tolist(), "f0_db": f0_db}]
+      melodic_contour = [{"time": time_f0.tolist(), "f0": f0.tolist()}]
       
       # Onset Detection
-      onset_frames, onset_times = get_onsets(y=y, sr=sr)
+      # onset_frames, onset_times = get_onsets(y=y, sr=sr)
 
       # Save data to json file
-      data = {"audio_spectogram_data": spectogram_data, "melodic_contour": melodic_contour, "onset_times": onset_times.tolist(), "score_contour": score_contour[filename]}
+      # "onset_times": onset_times.tolist(), 
+      data = {"audio_spectogram_data": spectogram_data, "melodic_contour": melodic_contour, "score_contour": score_contour[filename]}
 
 
       # save to 'Audio vs Score' data folder
       print(">> {filename}")
       print()
       with open(audio_vs_score / f"{filename}_audio_vs_score.json", "w") as f:
-          json.dump(data, f, indent=4)
+          json.dump(data, f)
 
-      del y, sr, f0, time_f0, f0_db, spectogram_data, onset_frames, onset_times
+      # , onset_frames, onset_times
+      del y, sr, f0, time_f0, f0_db, spectogram_data
       gc.collect()
     except Exception as e:
       print(f"Error: {filename}\n{e}")

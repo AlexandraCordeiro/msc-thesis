@@ -154,7 +154,7 @@ export default function GridLayout() {
     }
   };
 
-  const handleCollectionChange = (event, newValue) => {
+  const handleCollectionChange = (newValue) => {
     setCollection(newValue);
   };
 
@@ -172,7 +172,7 @@ export default function GridLayout() {
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                  <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
@@ -255,7 +255,7 @@ export default function GridLayout() {
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                    <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
@@ -334,7 +334,7 @@ export default function GridLayout() {
                 <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                   <div style={{display: 'flex', flexDirection: 'column'}}>
                     <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                    <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                    <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                   </div>
                 </Grid>
 
@@ -422,7 +422,7 @@ export default function GridLayout() {
               <Grid size={{xs: 1, sm: 3, md: 7, lg: 7, xl: 8}} display='flex' flexDirection='column' alignItems='flex-end' justifyContent="center">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                   <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a tune</Typography>
-                  <DropdownMenu options={titles} handleTuneChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
+                  <DropdownMenu options={titles} handleChange={handleTuneChange} selectedValue={tune}></DropdownMenu>
                 </div>
               </Grid>
               
@@ -531,12 +531,17 @@ export default function GridLayout() {
                 </div>
               </Grid>
 
-              <Grid size={{xs: 12, sm: 3}} display='flex' justifyContent="flex-end">
-                <div sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: "flex-end"}}>
+              
+              <Grid size={{xs: 12, sm: 3}} display='flex' justifyContent="flex-end" flexDirection={'column'}>
+                <div style={{display: 'flex', flexDirection: 'column', paddingBottom: '2rem'}}>
+                  <Typography variant='caption' color='black' fontFamily={'montserrat'} fontWeight={500}>Select a collection</Typography>
+                  <DropdownMenu options={collections} handleChange={handleCollectionChange} selectedValue={collection}></DropdownMenu>
+                </div>
+
+                <div sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: "flex-end", paddingTop: '1rem'}}>
                   <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', background: 'white', padding: '10px', borderRadius: '0.7rem', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', width: '180px'}}>
                     
                     <Typography variant='h5' textAlign={'center'} color='black' fontFamily='playfair display' paddingBottom={'1rem'}>How to Read</Typography>
-
 
                     <Typography variant='caption' color={'black'} fontFamily='montserrat' style={{whiteSpace: "pre-line"}}>
                     {"Each radial line represents an arc diagram for a tune in the collection.\nAs in the previous visualisation, the arc diagrams refer to musical intervals."}

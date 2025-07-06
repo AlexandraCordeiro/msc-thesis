@@ -150,6 +150,21 @@ export function drawLinks(data, group, graphHeight, graphWidth, x, extent) {
     .attr("stroke-width", "0.05rem"/* d => d.count */)
     .attr("stroke-opacity", d => opacityScale(d.count))
 
+    requestAnimationFrame(() => {
+        links
+            .attr("stroke-dasharray", function() {
+                return this.getTotalLength();
+            })
+            .attr("stroke-dashoffset", function() {
+                return this.getTotalLength();
+            })
+            .transition()
+            .duration(600) 
+            .delay((d, i) => i * 50)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0)
+    })
+
     return links
 }
 

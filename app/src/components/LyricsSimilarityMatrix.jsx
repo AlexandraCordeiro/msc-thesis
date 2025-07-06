@@ -32,7 +32,6 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         const graphHeight = graphWidth;
 
         let data = csvData
-        console.log(data)
         let song = data[tuneIndex]
         let songTokens = arrayOfTokensFromString(cleanString(song.lyrics))
         let setOfTokens = d3.shuffle(Array.from(setOfTokensFromString(cleanString(song.lyrics.toLowerCase()))))

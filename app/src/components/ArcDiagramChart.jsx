@@ -227,10 +227,15 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     .range(["#fc00ff", "#00dbde"])
     .domain([noteToMidi("C1"), noteToMidi("C8")])
 
+
+    // save order
+    data.links.forEach((d, i) => d.originalIndex = i);
+
     // Add the links
     let sortedLinks = data.links.slice().sort((a, b) => {
         return Math.abs(b.source - b.target) - Math.abs(a.source - a.target)
     })
+
     const links = group
     .append('g')
     .attr('id', 'links')
@@ -263,9 +268,9 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
             path = 
                 ['M', start, y,                     // arc starts at x, y
                 'A',                                // This means we're gonna build an elliptical arc
-                Math.abs(start - end), ',',                   // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
+                Math.abs(start - end), ',',         // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
                 arcHeight, 0, 0, ',',
-                startid > endid ? 1 : 0, end, ',', y]
+                startid > endid ? 0 : 1, end, ',', y]
                 .join(' ');
         }
 
@@ -283,6 +288,20 @@ export function drawLinks(data, group, graphHeight, graphWidth, x) {
     .attr("stroke-opacity", d => opacityScale(d.count))
     .on("mouseover", (e, d) => mouseOver(e, d, data, graphHeight, graphWidth, x, "music-intervals"))
     .on("mouseout", (e, d) => mouseOut(e, d, "music-intervals"))
+
+    links
+    .attr("stroke-dasharray", function() {
+        return this.getTotalLength();
+    })
+    .attr("stroke-dashoffset", function() {
+        return this.getTotalLength();
+    })
+    .transition()
+    .duration(600) 
+    .delay(d => d.originalIndex * 500)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0)
+
 
     return links
 }

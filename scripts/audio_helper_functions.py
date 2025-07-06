@@ -68,8 +68,7 @@ def get_spectogram_data(y, sr):
     spectogram_data = []
     for bin, dbs in enumerate(db_values):
         for i, db in enumerate(dbs):
-            spectogram_data.append({"time": str(time_spectogram[i]), "bin": str(bin), "db": str(db), "freq": str(freqs[bin])})
-
-    print(D.shape)
+            spectogram_data.append({"time": str(time_spectogram[i]), "db": str(db), "freq": str(freqs[bin])})
+            
     return spectogram_data
     

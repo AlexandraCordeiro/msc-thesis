@@ -482,9 +482,9 @@ def get_music_intervals_info_and_save_to_folder(tune_collection):
             traceback.print_exc()
 
 
-""" get_music_intervals_info_and_save_to_folder("./Traditional Irish Dance Tunes Composed by James Kelly (vol.1)") """
+get_music_intervals_info_and_save_to_folder("IE-2019-D-HLS")
 
-collection = "Dance music of Ireland"
+""" collection = "IE-2019-D-HLS"
 all_tunes = Path(f'./{collection}')
 
 intervals_info_about_all_tunes = []
@@ -505,4 +505,4 @@ for tune in tqdm(all_tunes.iterdir()):
 
 print("wrinting...")
 with open(f'{collection}.json', 'w') as f:
-    json.dump(intervals_info_about_all_tunes, f)
+    json.dump(intervals_info_about_all_tunes, f) """

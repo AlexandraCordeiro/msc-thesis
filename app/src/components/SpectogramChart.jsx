@@ -13,7 +13,8 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
     const svgRef = useRef(null);
     const [width, height] = useWindowSize(gridId);
-    const filename = `/audio_vs_score/${tune}_audio_vs_score.json`
+    const filename = `${tune}_audio_vs_score.json`
+    // const filename = `/audio_vs_score/${tune}_audio_vs_score.json`
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
 
@@ -44,7 +45,6 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
         const timeOffset = audioContourTime[0]
         const normalizedAudioContourTime = audioContourTime.map(t => t - timeOffset)
         const audioContourFrequency = data.melodic_contour[0].f0.slice(offsetIndex)
-        const audioContourDb = data.melodic_contour[0].f0_db
         
         // spectogram data
         const groupDataByTime = Array.from(d3.group(data.audio_spectogram_data, d => +d.time)).flatMap(d => d[1])
@@ -60,8 +60,7 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
         const dbThreshold = 0;
         const audioPathData = normalizedAudioContourTime.map((time, i) => ({
             time: +time,
-            f0: +audioContourFrequency[i],
-            db: +audioContourDb[i]
+            f0: +audioContourFrequency[i]
         }));
 
         const scoreNotesData = data.score_contour.flatMap(d => [
@@ -71,7 +70,6 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
         return {offsetIndex,
             audioContourFrequency,
-            audioContourDb,
             audioContourTime,
             normalizedAudioContourTime,
             groupDataByTime,
@@ -113,7 +111,6 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
     const mouseOver = useCallback((d, time, circle) => {
 
-        console.log(circle.attr("id"))
         let text
         let r = circle.attr("r")
 
@@ -172,9 +169,13 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
 
     useEffect(() => {
-        d3.json(filename).then((loadedData) => {
-            setData(loadedData)
-            requestAnimationFrame(() => setLoading(false)) // render spinner!
+        d3.json('/media.json').then((d) => {
+            let rawUrl = d.audio_vs_score.filter(d => d.original_name === filename)[0].url
+            const proxyUrl = `/api/fetch?url=${encodeURIComponent(rawUrl)}`;
+            d3.json(proxyUrl).then((loadedData) => {
+                setData(loadedData)
+                requestAnimationFrame(() => setLoading(false)) // render spinner!
+            })
         })
     }, [filename])
 
@@ -196,7 +197,6 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
 
         const {offsetIndex,
             audioContourFrequency,
-            audioContourDb,
             audioContourTime,
             normalizedAudioContourTime,
             groupDataByTime,
