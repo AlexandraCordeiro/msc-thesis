@@ -134,7 +134,7 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
         d3.select("#tooltip-score")
         .transition()
         .duration(200)
-        .style("opacity", 1)
+        .style("visibility", 'visible')
         .style("color", '#390160')
         .style("font-family", "montserrat")
         .style("font-size", '14px')
@@ -151,7 +151,7 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
     }, [])
 
     const mouseOut = useCallback((circle) => {
-        d3.select("#tooltip-score").style("opacity", 0)
+        d3.select("#tooltip-score").style("visibility", 'hidden')
 
         if (circle.attr("id") == "tooltip-score-contour") {
             circle
@@ -222,7 +222,7 @@ const SpectogramChart = ({tune, gridId, setMinDb, setMaxDb}) => {
         d3.select("body")
         .append("div")
         .attr("id", "tooltip-score")
-        .attr("style", "position: absolute; opacity: 0;")
+        .attr("style", "position: absolute; visibility: hidden;")
 
         const viz = svg.append("g")
         .attr("id", "audio-vs-score")

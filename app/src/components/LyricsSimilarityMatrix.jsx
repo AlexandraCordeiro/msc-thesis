@@ -82,7 +82,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         d3.select("#tooltip-lyrics")
         .transition()
         .duration(200)
-        .style("opacity", 1)
+        .style("visibility", 'visible')
         .style("color", 'black')
         .style("font-family", "montserrat")
         .style("font-size", '14px')
@@ -100,7 +100,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
     }, [])
 
     const mouseOut = useCallback((circle, size) => {
-        d3.select("#tooltip-lyrics").style("opacity", 0)
+        d3.select("#tooltip-lyrics").style("visibility", 'visible')
         circle.attr("r", size)
     }, [])
 
@@ -151,7 +151,7 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         d3.select("body")
         .append("div")
         .attr("id", "tooltip-lyrics")
-        .attr("style", "position: absolute; opacity: 0;")
+        .attr("style", "position: absolute; visibility: hidden;")
 
         // chart
         const chart = svg.append('g')
@@ -193,10 +193,10 @@ const LyricsSimilarityMatrix = ({tuneIndex, gridId}) => {
         );
         
         svg.on("mouseleave", () => {
-            d3.select("#tooltip-lyrics").style("opacity", 0)
+            d3.select("#tooltip-lyrics").style("visibility", 'hidden')
         })
         svg.on("mouseout", () => {
-            d3.select("#tooltip-lyrics").style("opacity", 0)
+            d3.select("#tooltip-lyrics").style("visibility", 'hidden')
         })
         svg.call(zoom).call(zoom.transform, initialTransform);
 

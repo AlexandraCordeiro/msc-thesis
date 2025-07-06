@@ -87,7 +87,7 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
         // transition
         tooltip.transition()
         .duration(200)
-        .style("opacity", 1)
+        .style("visibility", 'visible')
         
         drawSparklines(data, tooltip, graphHeight, graphWidth, x, d)
         let sparklineWidth = tooltip.node().getBBox().width,
@@ -112,7 +112,7 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
         let offset = 10
 
         tooltipIntervals
-        .attr("opacity", 1)
+        .attr("visibility", 'visible')
         .attr("class", "interval-tooltip")
         .append("rect")
         .attr("width", tooltipWidth)
@@ -155,10 +155,10 @@ const mouseOver = (e, d, data, graphHeight, graphWidth, x, type) => {
 const mouseOut = (e, d, type) => {
 
     if (type == "tooltip-histogram") {
-        d3.select("#tooltip-sparklines").style("opacity", 0);
+        d3.select("#tooltip-sparklines").style("visibility", 'hidden');
         d3.select(`#circle-${d}`)
         .transition()
-        .attr("opacity", 0)
+        .attr("opacity", '0')
         .attr("r", 10)
     }
     if (type == "music-intervals") {
@@ -344,7 +344,7 @@ const ArcDiagramChart = ({tune, gridId, setMaxCount}) => {
         group
         .append("g")
         .attr("id", "tooltip-sparklines")
-        .attr("style", "opacity: 0;")
+        .attr("style", "visibility: visible;")
 
        svg
         .append("g")
