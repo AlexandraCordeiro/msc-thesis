@@ -37,6 +37,8 @@ The goal of this dissertation project is to develop interactive information visu
 - [Vite Build Tool](https://vite.dev/)
 - [React Spinners by Davud Hu](https://www.davidhu.io/react-spinners/)
 - [Vercel](https://vercel.com/home)
+- [Librosa](https://librosa.org/)
+- [Music21](https://www.music21.org/)
 
 
 ## 📦 Dependencies
@@ -54,6 +56,14 @@ The goal of this dissertation project is to develop interactive information visu
     "react-dom": "^18.3.1",
     "react-spinners": "^0.17.0"
   },
+
+## 📊 Data Collection
+
+- [ITMA - The Well for Irish Traditional Music, Song and Dance](https://www.itma.ie/)
+
+## 🌐 Project Scope
+
+- [EA-DIGIFOLK: An European and Ibero-American approach for the digital collection, analysis and dissemination of folk music](https://www.cisuc.uc.pt/en/projects/ea-digifolk)
   
 ## 👩‍💻 Run this repo locally
 
