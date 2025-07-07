@@ -178,7 +178,7 @@ export default function GridLayout() {
                     <Typography variant='h4' fontFamily={'playfair display'} color='black'>Lyrics</Typography>
                   </div>
                   <div>
-                    <Typography variant='body' color={'black'} fontFamily='montserrat' paddingTop={'1rem'}>Similarity matrix where cell (i, j) is filled if word i in a song's lyrics is the same as word j.</Typography>
+                    <Typography variant='body' color={'black'} fontFamily='montserrat' paddingTop={'1rem'}>Similarity matrix where cell (𝑖, 𝑗) is filled if word 𝑖 in a song's lyrics is the same as word 𝑗.</Typography>
                   </div>
                 </div>
                 <div style={{'paddingTop': '2rem'}}>
